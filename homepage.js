@@ -30,16 +30,16 @@ var homepage = React.createClass({
   createSwipers(type){
     var toReturn = [];
     let results = realm.objects('Guide');
-    if(type=='new_guides') {
+    if(type==='new_guides') {
       results = results.filtered('new=true AND displayedElsewhere=0');
     }
-    else if(type=='featured') {
+    else if(type==='featured') {
       results = results.filtered('featured=true AND displayedElsewhere=0');
     }
-    else if (type=='near_me') {
+    else if (type==='near_me') {
       results = results.filtered('near_me=true AND displayedElsewhere=0');
     }
-    else if (type=='favorited'){
+    else if (type==='favorited'){
       results = results.filtered('favorited=true AND displayedElsewhere=0');
     }
     for(var i=0;(i<=5)&&i<results.length;i++){
@@ -69,6 +69,7 @@ var homepage = React.createClass({
   render(){
     return(
     <ScrollView>
+      {this.clearDisplay()}
       <Text style={styles.header}>Favorited</Text>
       <Swiper height={240}
         style={styles.swiper}
