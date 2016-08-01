@@ -67,7 +67,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
         tags:[easy, out, dogfriendly, lake, single],
         display:0,
         lat:40.597284,
-        long: -111.584576
+        long: -111.584576,
+        displayedElsewhere:0
 
       });
     });
@@ -139,7 +140,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[out, diff, dogfriendly, lake, single],
       display:0,
       lat:40.6336,
-      long:-111.724
+      long:-111.724,
+      displayedElsewhere:0
     });
   });
 
@@ -233,7 +235,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[loop, mod, single, all],
       display:0,
       lat:37.6282535,
-      long:-112.16295389999999
+      long:-112.16295389999999,
+      displayedElsewhere:0
     });
   });
 
@@ -330,7 +333,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[loop, mod, fishing, over, lake],
       display:0,
       lat:40.567167,
-      long: -110.8254433
+      long: -110.8254433,
+      displayedElsewhere:0
     });
   });
 
@@ -438,7 +442,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[loop, mod, over, all],
       display:0,
       lat:37.8583807,
-      long:-111.03865080000003
+      long:-111.03865080000003,
+      displayedElsewhere:0
     });
   });
 
@@ -494,7 +499,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[out, diff,single,lake],
       display:0,
       lat:43.7514791,
-      long:-110.72232930000001
+      long:-110.72232930000001,
+      displayedElsewhere:0
       });
   });
 
@@ -522,7 +528,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[loop, easy,dogfriendly,single],
       display:0,
       lat:40.4599175,
-      long:-111.55111629999999
+      long:-111.55111629999999,
+      displayedElsewhere:0
     });
   });
 
@@ -586,7 +593,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[loop, inter, dogfriendly, all,single,lake],
       display:0,
       lat:44.32568999999999,
-      long:-111.46522500000003
+      long:-111.46522500000003,
+      displayedElsewhere:0
     });
   });
 
@@ -614,7 +622,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[out, mod, dogfriendly, single],
       display:0,
       lat:40.6498,
-      long:-111.648
+      long:-111.648,
+      displayedElsewhere:0
     });
   });
 
@@ -650,7 +659,8 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       tags:[out, mod, dogfriendly, all, single],
       display:0,
       lat:40.4043,
-      long:-111.605
+      long:-111.605,
+      displayedElsewhere:0
     });
   });
 
@@ -692,8 +702,9 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       gallSize:6,
       tags:[out, mod, dogfriendly, single, lake],
       display:0,
-      lat:40.57242,
-      long:-111.69896
+      lat:41.89078,
+      long:-111.637752,
+      displayedElsewhere:0
     });
   });
 

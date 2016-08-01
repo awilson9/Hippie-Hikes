@@ -51,7 +51,8 @@ const GuideSchema = {
     favorited:{type:'bool', default:true},
     new:{type:'bool', default:true},
     lat:'double',
-    long:'double'
+    long:'double',
+    displayedElsewhere:'int'
 
   }
 };

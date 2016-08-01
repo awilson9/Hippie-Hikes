@@ -14,6 +14,7 @@ var store = require('./store');
 var about = require('./about');
 var MyHikes = require('./maps');
 var guides = require('./Guides');
+var IndexMap = require('./indexMap');
 
 
 
@@ -64,9 +65,9 @@ var Home = React.createClass({
   },
   _navigateMH(){
     this.props.navigator.push({
-      component:MyHikes
+      component:IndexMap
 
-      
+
     });
   },
   _navigateStore(){

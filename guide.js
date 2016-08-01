@@ -29,12 +29,11 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
 //each guide has quick info section, photo gallery, detailed info, similar hikes
 
    var guide = React.createClass({
-     _navigate(name, gallsize){
+     _navigate(name){
        this.props.navigator.push({
          component:guide,
          passProps:{
            name: name,
-           gallsize:gallsize
          }
        })
      },
@@ -71,7 +70,7 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
             })
             var img_index = 0;
 
-            for (var i=1;i<=this.props.gallsize;i++){
+            for (var i=1;i<=site.gallSize;i++){
 
               if(img_index<site.img_descriptions.length&&site.img_descriptions[img_index].img_index==i){
                   images.push(

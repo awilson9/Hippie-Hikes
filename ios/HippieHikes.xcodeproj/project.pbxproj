@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -27,6 +26,7 @@
 		19418D201D4837F50014F8B5 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 19418D1E1D4837F50014F8B5 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2720FDD58E654B12AF7A23E4 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DA331766FAC1491092BA85C1 /* libc++.tbd */; };
 		321266AF5BED4684815F69B8 /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8988CE4DCF2640938AF50A17 /* libRealmReact.a */; };
+		45BE072EB9B640DCAB445529 /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AA7E42763844B139F41F48A /* libRNSearchBar.a */; };
 		58E64179FEB3468586DFD262 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1317F01683F644DD9701099E /* libz.tbd */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		B6C310ECF81C4CEAA52D201B /* libRCTMapboxGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BC627DF79049A998C080D5 /* libRCTMapboxGL.a */; };
@@ -111,6 +111,13 @@
 			remoteGlobalIDString = C5DBB34B1AF2EF2B00E611A9;
 			remoteInfo = RCTMapboxGLTests;
 		};
+		19418D451D4BC6C30014F8B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 356A7BB45CD446CFA92CD337 /* RNSearchBar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNSearchBar;
+		};
 		19D2C7701D48351E008B55A8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D5FAF2E03AB44E7AB107725E /* RCTMapboxGL.xcodeproj */;
@@ -194,6 +201,8 @@
 		19418D151D4837C20014F8B5 /* RCTMapboxGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMapboxGL.xcodeproj; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL.xcodeproj"; sourceTree = "<group>"; };
 		19418D1E1D4837F50014F8B5 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		268934F51C10442688D797C3 /* RealmReact.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RealmReact.xcodeproj; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; };
+		356A7BB45CD446CFA92CD337 /* RNSearchBar.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSearchBar.xcodeproj; path = "../node_modules/react-native-search-bar/RNSearchBar.xcodeproj"; sourceTree = "<group>"; };
+		5AA7E42763844B139F41F48A /* libRNSearchBar.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSearchBar.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8988CE4DCF2640938AF50A17 /* libRealmReact.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRealmReact.a; sourceTree = "<group>"; };
@@ -233,6 +242,7 @@
 				58E64179FEB3468586DFD262 /* libz.tbd in Frameworks */,
 				B6C310ECF81C4CEAA52D201B /* libRCTMapboxGL.a in Frameworks */,
 				BDA1B9A3FA504F96B0D2C67D /* libRCTYouTube.a in Frameworks */,
+				45BE072EB9B640DCAB445529 /* libRNSearchBar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +353,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		19418D321D4BC6C30014F8B5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19418D461D4BC6C30014F8B5 /* libRNSearchBar.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		19D2C7641D48351E008B55A8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -402,6 +420,7 @@
 				268934F51C10442688D797C3 /* RealmReact.xcodeproj */,
 				D5FAF2E03AB44E7AB107725E /* RCTMapboxGL.xcodeproj */,
 				9A595A1B44CF46A6BEC14AA3 /* RCTYouTube.xcodeproj */,
+				356A7BB45CD446CFA92CD337 /* RNSearchBar.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -562,6 +581,10 @@
 					ProductGroup = 19D2C7641D48351E008B55A8 /* Products */;
 					ProjectRef = 268934F51C10442688D797C3 /* RealmReact.xcodeproj */;
 				},
+				{
+					ProductGroup = 19418D321D4BC6C30014F8B5 /* Products */;
+					ProjectRef = 356A7BB45CD446CFA92CD337 /* RNSearchBar.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -640,6 +663,13 @@
 			fileType = wrapper.cfbundle;
 			path = RCTMapboxGLTests.xctest;
 			remoteRef = 19418D1C1D4837C20014F8B5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19418D461D4BC6C30014F8B5 /* libRNSearchBar.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSearchBar.a;
+			remoteRef = 19418D451D4BC6C30014F8B5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		19D2C7711D48351E008B55A8 /* libRCTMapboxGL.a */ = {
@@ -793,6 +823,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HippieHikes.app/HippieHikes";
@@ -809,6 +840,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -834,6 +866,7 @@
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-youtube/**",
+					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 				);
 				INFOPLIST_FILE = HippieHikes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -862,6 +895,7 @@
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-youtube/**",
+					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 				);
 				INFOPLIST_FILE = HippieHikes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -916,6 +950,7 @@
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-youtube/**",
+					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -959,6 +994,7 @@
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-mapbox-gl/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-youtube/**",
+					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
