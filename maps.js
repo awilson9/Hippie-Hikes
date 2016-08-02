@@ -141,6 +141,7 @@ updateState(coords, self){
 
     StatusBar.setHidden(true);
     return (
+      
       <View style={styles.container}>
         <MapView
           ref={map => { this._map = map; }}

@@ -9,11 +9,15 @@ import { AppRegistry,
         TouchableHighlight,
         Image,
         ScrollView,
-        TabBarIOS } from 'react-native';
+        TabBarIOS,
+        Dimensions} from 'react-native';
 
+
+var WINDOW_WIDTH = Dimensions.get('window').width;
 import Accordion from 'react-native-accordion';
 import realm from './realm/index';
 var Swiper = require('react-native-swiper');
+var NavigationBar = require('react-native-navbar');
 
 var guide = require('./guide');
 
@@ -27,36 +31,78 @@ var homepage = React.createClass({
     })
   },
 
-  createSwipers(type){
-    var toReturn = [];
-    let results = realm.objects('Guide');
-    if(type==='new_guides') {
-      results = results.filtered('new=true AND displayedElsewhere=0');
-    }
-    else if(type==='featured') {
-      results = results.filtered('featured=true AND displayedElsewhere=0');
-    }
-    else if (type==='near_me') {
-      results = results.filtered('near_me=true AND displayedElsewhere=0');
-    }
-    else if (type==='favorited'){
-      results = results.filtered('favorited=true AND displayedElsewhere=0');
-    }
-    for(var i=0;(i<=5)&&i<results.length;i++){
-      var guide = results[i];
+  constructFavorites(){
+    let favorites = realm.objects('Guide').filtered('favorited=true');
+    var style = favorites.length;
+
+    var toReturn=[];
+    var row_num = 1;
+    var num_in_row = 1;
+    var order_last = 0;
+      favorites.forEach(function(guide, i){
       realm.write(() => {
         guide.displayedElsewhere = 1
       });
       toReturn.push(
       <TouchableHighlight
-        key={i} onPress={()=>this._navigate(guide.name, guide.gallSize)}>
+        key={i} onPress={()=>this._navigate(guide.name)}>
         <View>
-          <Image source = {{uri:guide.name+'site'}} resizeMode="contain" style={styles.contain}/>
+          <Image source = {{uri:guide.name+'site'}} resizeMode="cover" style={this.createStyle(row_num,num_in_row,order_last)}/>
         </View>
       </TouchableHighlight>
       );
-    }
+      if(num_in_row==1)num_in_row=2;
+      else if(num_in_row==2&&row_num==2){
+        num_in_row=1;
+        order_last=(order_last==0)?1:0;
+        row_num=1;
+      }
+      else{
+        row_num++;
+      }
+    }, this);
     return toReturn;
+  },
+  createStyle(row_num, num_in_row, order_last){
+    if(num_in_row==1){
+      return{
+        margin:3,
+        width: WINDOW_WIDTH-12,
+        height:200
+      }
+    }
+    else if(num_in_row==2&&order_last==0){
+      if(row_num==1){
+        return{
+          margin:3,
+          width: ((7*WINDOW_WIDTH)/16)-12,
+          height:150
+        }
+      }
+      else {
+        return{
+          margin:3,
+          width: ((9*WINDOW_WIDTH)/16)-12,
+          height:150
+        }
+      }
+  }
+  else if(num_in_row==2&&order_last==1){
+    if(row_num==1){
+      return{
+        margin:3,
+        width: ((9*WINDOW_WIDTH)/16)-12,
+        height:150
+      }
+    }
+    else {
+      return{
+        margin:3,
+        width: ((7*WINDOW_WIDTH)/16)-12,
+        height:150
+      }
+    }
+  }
   },
   clearDisplay(){
     let guides = realm.objects('Guide');
@@ -68,46 +114,53 @@ var homepage = React.createClass({
   },
   render(){
     return(
-    <ScrollView>
+    <View style={{flex:1}}>
+    <NavigationBar
+    title={<View><Image style={{ width: 20, height: 20, marginRight: 5, }} source={require('./img/Logo-03.png')}/></View>}
+    style={{borderBottomColor:'black',
+            borderBottomWidth:.1,
+          }}
+    />
+    <ScrollView style={{flex:1}}
+    automaticallyAdjustContentInsets={false}
+    contentInset={{bottom:49}}>
       {this.clearDisplay()}
-      <Text style={styles.header}>Favorited</Text>
-      <Swiper height={240}
-        style={styles.swiper}
-        onMomentumScrollEnd={function(e, state, context){console.log('index:', state.index)}}
-        dot={<View style={{backgroundColor:'rgba(0,0,0,.2)', width: 5, height: 5,borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} ></View>}
-        activeDot={<View style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} ></View>}
-        paginationStyle={{bottom: -23, left: null, right: 10,}} loop={true}>
-        {this.createSwipers('favorited')}
-      </Swiper>
-      <Text style={styles.header}>Near Me</Text>
-      <Swiper height={240}
-        style={styles.swiper}
-        onMomentumScrollEnd={function(e, state, context){console.log('index:', state.index)}}
-        dot={<View style={{backgroundColor:'rgba(0,0,0,.2)', width: 5, height: 5,borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} ></View>}
-        activeDot={<View style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} ></View>}
-        paginationStyle={{bottom: -23, left: null, right: 10,}} loop={true}>
-        {this.createSwipers('near_me')}
-      </Swiper>
-      <Text style={styles.header}>Featured</Text>
-      <Swiper
-        style={styles.swiper}
-        height={240}
-        onMomentumScrollEnd={function(e, state, context){console.log('index:', state.index)}}
-        dot={<View style={{backgroundColor:'rgba(0,0,0,.2)', width: 5, height: 5,borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} ></View>}
-        activeDot={<View style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} ></View>}
-        paginationStyle={{bottom: -23, left: null, right: 10,}} loop={true}>
-        {this.createSwipers('featured')}
-      </Swiper>
-      <Text style={styles.header}>New Guides</Text>
-      <Swiper height={240}
-        style={styles.swiper}
-        onMomentumScrollEnd={function(e, state, context){console.log('index:', state.index)}}
-        dot={<View style={{backgroundColor:'rgba(0,0,0,.2)', width: 5, height: 5,borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} ></View>}
-        activeDot={<View style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} ></View>}
-        paginationStyle={{bottom: -23, left: null, right: 10,}} loop={true}>
-        {this.createSwipers('new_guides')}
-      </Swiper>
+      <NavigationBar
+      title={<Text>Favorited</Text>}
+      style={{borderBottomColor:'black',
+              borderBottomWidth:.1}}
+      />
+      <View style={styles.descriptions}>
+        {this.constructFavorites()}
+      </View>
+
+        <NavigationBar
+        title={<Text>Near Me</Text>}
+        style={{borderBottomColor:'black',
+                borderBottomWidth:.1}}
+        />
+        <View style={styles.descriptions}>
+
+        </View>
+        <NavigationBar
+        title={<Text>Featured</Text>}
+        style={{borderBottomColor:'black',
+                borderBottomWidth:.1}}
+        />
+
+        <View style={styles.descriptions}>
+
+        </View>
+        <NavigationBar
+        title={<Text>New Guides</Text>}
+        style={{borderBottomColor:'black',
+                borderBottomWidth:.1}}
+        />
+        <View style={styles.descriptions}>
+
+        </View>
     </ScrollView>
+    </View>
   );
 }
 });
@@ -121,9 +174,16 @@ var styles = StyleSheet.create({
     position:'relative',
     top:15
   },
-  contain: {
-    flex: 1,
-    height:250
+  descriptionWrapper:{
+    flexDirection:'column',
+
+
+  },
+  descriptions:{
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    flexDirection:'row',
+
   },
 });
 

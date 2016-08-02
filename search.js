@@ -260,6 +260,10 @@ var search = React.createClass({
       });
     });
     //closest to
+    let guideClosestTo = realm.objects('Guide').filtered('closest_to CONTAINS $0', text);
+    guideClosestTo.forEach(function(guide){
+      displayedGuides[guide.name].display = true;
+    });
 
     this.setState({
       displayedGuides:displayedGuides
@@ -382,7 +386,6 @@ var styles = StyleSheet.create({
   searchBar: {
     flex: 1,
     height:55,
-    margin:5,
     padding: 10,
     fontSize: 20,
     backgroundColor:'white',
@@ -411,7 +414,7 @@ var styles = StyleSheet.create({
   },
   tagContainer:{
     height:300,
-    marginTop:50
+    marginTop:5
   },
   contain: {
   flex: 1,

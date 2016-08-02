@@ -46,10 +46,10 @@ const GuideSchema = {
     hyperlapse:{type:'string', optional:true},
     gallSize:'int',
     display:'int',
-    featured:{type:'bool', default:true},
-    near_me:{type:'bool', default:true},
-    favorited:{type:'bool', default:true},
+    featured:{type:'bool', default:false},
+    favorited:{type:'bool', default:false},
     new:{type:'bool', default:true},
+    downloaded:{type:'bool', default:false},
     lat:'double',
     long:'double',
     displayedElsewhere:'int'

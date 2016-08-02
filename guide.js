@@ -9,15 +9,18 @@ import { AppRegistry,
         Image,
         ScrollView,
         Dimensions,
-        TouchableOpacity
+        TouchableOpacity,
+        TabBarIOS
         } from 'react-native';
 
 var Lightbox = require('react-native-lightbox');
 var map = require('./maps');
 var Swiper = require('react-native-swiper');
+var NavigationBar = require('react-native-navbar');
 
 import realm from './realm/index';
 import YouTube from 'react-native-youtube'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 
 var WINDOW_WIDTH = Dimensions.get('window').width;
@@ -53,33 +56,84 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
      status: null,
      quality: null,
      error: null,
-     isPlaying: true
+     isPlaying: true,
+     favorited:"",
+     downloaded:"",
+     site:null
    }
  },
-
+ componentWillMount(){
+   let site = realm.objects('Guide').filtered('name==$0', this.props.name)[0];
+   var favorited = "";
+   if(site.favorited){
+     favorited="ios-heart";
+   }
+   else{
+     favorited="ios-heart-outline";
+   }
+   if(site.downloaded){
+     downloaded="ios-download";
+   }
+   else{
+     downloaded="ios-download-outline";
+   }
+   this.setState({
+     site:site,
+     favorited:favorited,
+     downloaded:downloaded,
+   });
+ },
+  changeFavorited(){
+    if(this.state.favorited==="ios-heart"){
+      this.setState({
+        favorited:"ios-heart-outline"
+      });
+    }
+    else{
+      this.setState({
+        favorited:"ios-heart"
+      });
+    }
+    realm.write(()=>{
+      this.state.site.favorited = !this.state.site.favorited;
+    });
+  },
+  changeDownloaded(){
+    if(this.state.downloaded=="ios-download"){
+      this.setState({
+        downloaded:"ios-download-outline"
+      });
+    }
+    else{
+      this.setState({
+        downloaded:"ios-download"
+      });
+    }
+    realm.write(()=>{
+      this.state.site.downloaded = !this.state.site.downloaded;
+    });
+  },
           render() {
             var images = [];
             var imgpath = this.props.name;
-            let siteQuery = realm.objects('Guide').filtered('name == $0', imgpath).slice(0,1);
-            var site = siteQuery[0];
             var tags = [];
-            site.tags.forEach(function(item,i){
+            this.state.site.tags.forEach(function(item,i){
               tags.push(
                 <Text key={i} style={styles.textborder}>{item.name}</Text>
               );
-            })
+            });
             var img_index = 0;
 
-            for (var i=1;i<=site.gallSize;i++){
+            for (var i=1;i<=this.state.site.gallSize;i++){
 
-              if(img_index<site.img_descriptions.length&&site.img_descriptions[img_index].img_index==i){
+              if(img_index<this.state.site.img_descriptions.length&&this.state.site.img_descriptions[img_index].img_index==i){
                   images.push(
                     <View style = {styles.slide} key={i}>
                       <Lightbox navigator={this.props.navigator}>
                         <Image style={styles.contain} resizeMode="contain" source = {{uri: imgpath+i}}>
                           <View style={styles.caption}>
-                            <Text>{site.img_descriptions[img_index].description_1}</Text>
-                            <Text>{site.img_descriptions[img_index].description_2}</Text>
+                            <Text>{this.state.site.img_descriptions[img_index].description_1}</Text>
+                            <Text>{this.state.site.img_descriptions[img_index].description_2}</Text>
                           </View>
                         </Image>
                     </Lightbox>
@@ -101,9 +155,9 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
             }
 
             var imgheader = this.props.name + 'site';
-            var hyperlapse = (site.hyperlapse!=null) ? (<YouTube
+            var hyperlapse = (this.state.site.hyperlapse!=null) ? (<YouTube
               ref="youtubePlayer"
-              videoId={site.hyperlapse} // The YouTube video ID
+              videoId={this.state.site.hyperlapse} // The YouTube video ID
               play={this.state.isPlaying}           // control playback of video with true/false
               hidden={false}        // control visiblity of the entire view
               playsInline={true}    // control whether the video should play inline
@@ -118,30 +172,38 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
             var sim_hikes = [];
               sim_hikes.push(
                 <View key={1}>
-                  <TouchableHighlight onPress={() => this._navigate(site.similar_hikes[0].name, site.similar_hikes[0].gallSize)}>
-                    <Image style = {styles.contain} resizeMode="contain" source = {{uri:site.similar_hikes[0].name + 'site'}}/>
+                  <TouchableHighlight onPress={() => this._navigate(this.state.site.similar_hikes[0].name, this.state.site.similar_hikes[0].gallSize)}>
+                    <Image style = {styles.contain} resizeMode="contain" source = {{uri:this.state.site.similar_hikes[0].name + 'site'}}/>
                   </TouchableHighlight>
                 </View>
               );
               sim_hikes.push(
                 <View key={2}>
-                  <TouchableHighlight onPress={() => this._navigate(site.similar_hikes[1].name, site.similar_hikes[1].gallSize)}>
-                    <Image style = {styles.contain} resizeMode="contain" source = {{uri:site.similar_hikes[1].name + 'site'}}/>
+                  <TouchableHighlight onPress={() => this._navigate(this.state.site.similar_hikes[1].name, this.state.site.similar_hikes[1].gallSize)}>
+                    <Image style = {styles.contain} resizeMode="contain" source = {{uri:this.state.site.similar_hikes[1].name + 'site'}}/>
                   </TouchableHighlight>
                 </View>
               );
 
 
               return(
+                <View style={{flex:1}}>
+
+                <NavigationBar
+                title={{title:this.state.site.name_description}}
+                leftButton={<Icon style={{marginLeft:5}} size={25} onPress={()=>this.props.navigator.pop()} name="ios-arrow-back"/>}
+                    />
+
+
                 <ScrollView style = {styles.background}>
 
                   <View style={{marginBottom:50}}>
                     <Image style = {styles.contain} resizeMode="contain" source={{uri:imgheader}}/>
                   </View>
                   <View style={{alignItems:'center', marginBottom:40}}>
-                    <Text style={styles.location}>{site.name_description}</Text>
-                    <Text style={styles.location}>{site.location_loc.description}</Text>
-                    <Text style={styles.location}>{site.closest_to}, {site.location_loc.state}</Text>
+                    <Text style={styles.location}>{this.state.site.name_description}</Text>
+                    <Text style={styles.location}>{this.state.site.location_loc.description}</Text>
+                    <Text style={styles.location}>{this.state.site.closest_to}, {this.state.site.location_loc.state}</Text>
 
                   </View>
 
@@ -151,10 +213,10 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
                   >
 
 
-                    <Text style={styles.textborder}>{site.distance} Miles</Text>
-                    <Text style={styles.textborder}>{site.elevation} ft. gain</Text>
+                    <Text style={styles.textborder}>{this.state.site.distance} Miles</Text>
+                    <Text style={styles.textborder}>{this.state.site.elevation} ft. gain</Text>
                     {tags}
-                    <TouchableHighlight onPress = {() => this._navigateMap(site.lat, site.long)}>
+                    <TouchableHighlight onPress = {() => this._navigateMap(this.state.site.lat, this.state.site.long)}>
                       <Text style = {styles.textborder}>Click For Directions</Text>
                     </TouchableHighlight>
 
@@ -169,7 +231,7 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
                   </Swiper>
                   </View>
                   <View>
-                    <Text style = {styles.longdescription}>{site.description}</Text>
+                    <Text style = {styles.longdescription}>{this.state.site.description}</Text>
                   </View>
                   {hyperlapse}
 
@@ -177,6 +239,20 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
                   {sim_hikes}
 
                 </ScrollView>
+                <View style={styles.bottomBar}>
+                  <View style={styles.favorite}>
+                    <Icon
+                      onPress={()=>this.changeFavorited()}
+                      name={this.state.favorited}
+                      size={30}/>
+                  </View>
+                  <View style={styles.download}>
+                    <Icon name={this.state.downloaded}
+                    onPress={()=>this.changeDownloaded()}
+                    size={30}/>
+                  </View>
+                </View>
+                </View>
               );
           }
       });
@@ -184,25 +260,38 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
 
 
   var styles = StyleSheet.create({
-background:{
-  backgroundColor:'white'
-},
-caption:{
-  position:'absolute',
-  bottom:-20
-},
-location:{
-    color: '#696969',
-    fontSize:30,
-    padding:10
-},
-similarHikes:{
-  marginTop:50,
-  textDecorationLine:'underline',
-  fontSize:40,
-  backgroundColor:'#C0C0C0',
-  opacity:.7
-},
+    bottomBar:{
+      height:50,
+      flexDirection:'row',
+      alignItems:'center'
+    },
+    favorite:{
+      alignItems:'center',
+      flex:.5,
+    },
+    download:{
+      alignItems:'center',
+      flex:.5
+    },
+    background:{
+      backgroundColor:'white'
+    },
+    caption:{
+      position:'absolute',
+      bottom:-20
+    },
+    location:{
+      color: '#696969',
+      fontSize:30,
+      padding:10
+    },
+    similarHikes:{
+      marginTop:50,
+      textDecorationLine:'underline',
+      fontSize:40,
+      backgroundColor:'#C0C0C0',
+      opacity:.7
+    },
     slide: {
       flex: 1,
       justifyContent: 'center',
@@ -250,16 +339,16 @@ similarHikes:{
       borderWidth: 2,
       borderColor:'#2ebbbe',
       overflow:'hidden',
-      fontSize:15,
+      fontSize:10,
        color: '#696969',
       padding: 15,
       borderRadius:4,
       margin:3
       },
     description: {
-      fontSize: 20,
+      fontSize: 15,
       backgroundColor: 'white'
       },
 
   });
-   module.exports = guide;
+  module.exports = guide;

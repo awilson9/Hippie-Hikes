@@ -14,6 +14,9 @@ import { AppRegistry,
 import Accordion from 'react-native-accordion';
 import realm from './realm/index';
 var Swiper = require('react-native-swiper');
+import Icon from 'react-native-vector-icons/Ionicons';
+var ScrollableTabView = require('react-native-scrollable-tab-view');
+import CustomTabBar from './CustomTabBar'
 
 var guide = require('./guide');
 var IndexMap = require('./indexMap');
@@ -31,30 +34,28 @@ var guides = React.createClass({
   },
   render() {
     return (
-      <TabBarIOS>
-        <TabBarIOS.Item
-          title="Home"
-          selected={this.state.selectedTab==='Home'}
-          onPress={() => {
-            this.setState({
-              selectedTab:'Home',
-            });
-          }}>
-          <Homepage />
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          title="Search"
-          selected={this.state.selectedTab==='Search'}
-          onPress={() => {
-            this.setState({
-              selectedTab:'Search',
-            });
-        }}>
-          <Search
+      <ScrollableTabView
+      style={{marginTop: 20, }}
+      initialPage={0}
+      tabBarPosition={'bottom'}
+      renderTabBar={() => <CustomTabBar />}
+      >
+
+          <Homepage tabLabel="md-home"
           navigator = {this.props.navigator}
           />
-        </TabBarIOS.Item>
-        </TabBarIOS>
+
+
+          <Search
+          tabLabel="ios-search-outline"
+          navigator = {this.props.navigator}
+          />
+
+        <IndexMap tabLabel="ios-compass"
+          navigator={this.props.navigator}/>
+
+
+        </ScrollableTabView>
            );
        }
    })
