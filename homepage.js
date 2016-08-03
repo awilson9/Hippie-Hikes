@@ -30,7 +30,31 @@ var homepage = React.createClass({
       }
     })
   },
-
+  constructNearMe(){
+    var toReturn=[];
+    var row_num = 1;
+    var num_in_row = 1;
+    var order_last = 0;
+    this.props.shortest.forEach(function(guide, i){
+      toReturn.push(
+      <TouchableHighlight
+        key={i} onPress={()=>this._navigate(guide)}>
+        <View>
+          <Image source = {{uri:guide+'site'}} resizeMode="cover" style={this.createStyle(row_num,num_in_row,order_last)}/>
+        </View>
+      </TouchableHighlight>);
+      if(num_in_row==1)num_in_row=2;
+      else if(num_in_row==2&&row_num==2){
+        num_in_row=1;
+        order_last=(order_last==0)?1:0;
+        row_num=1;
+      }
+      else{
+        row_num++;
+      }
+    }, this);
+    return toReturn;
+  },
   constructFavorites(){
     let favorites = realm.objects('Guide').filtered('favorited=true');
     var style = favorites.length;
@@ -140,7 +164,7 @@ var homepage = React.createClass({
                 borderBottomWidth:.1}}
         />
         <View style={styles.descriptions}>
-
+        {this.constructNearMe()}
         </View>
         <NavigationBar
         title={<Text>Featured</Text>}

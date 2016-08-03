@@ -59,8 +59,19 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
      isPlaying: true,
      favorited:"",
      downloaded:"",
-     site:null
+     site:null,
+     displayCaption:false
    }
+ },
+ getCaption(img_index){
+  if(this.state.displayCaption){
+    return(
+          <View style={styles.caption}>
+            <Text style={{color:'white'}}>{this.state.site.img_descriptions[img_index].description_1}</Text>
+            <Text style={{color:'white'}}>{this.state.site.img_descriptions[img_index].description_2}</Text>
+          </View>);
+  }
+  else return null;
  },
  componentWillMount(){
    let site = realm.objects('Guide').filtered('name==$0', this.props.name)[0];
@@ -128,13 +139,18 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
 
               if(img_index<this.state.site.img_descriptions.length&&this.state.site.img_descriptions[img_index].img_index==i){
                   images.push(
-                    <View style = {styles.slide} key={i}>
-                      <Lightbox navigator={this.props.navigator}>
+                    <View style = {styles.slide} key={i}
+                    title={<View><Text>{this.state.site.img_descriptions[img_index].description_1}</Text><Text>{this.state.site.img_descriptions[img_index].description_2}</Text></View>}>
+                      <Lightbox navigator={this.props.navigator}
+                      onOpen={()=>this.setState({
+                        displayCaption:true
+                      })}
+                      onClose={()=>this.setState({
+                        displayCaption:false
+                      })}
+                      >
                         <Image style={styles.contain} resizeMode="contain" source = {{uri: imgpath+i}}>
-                          <View style={styles.caption}>
-                            <Text>{this.state.site.img_descriptions[img_index].description_1}</Text>
-                            <Text>{this.state.site.img_descriptions[img_index].description_2}</Text>
-                          </View>
+                          {this.getCaption(img_index)}
                         </Image>
                     </Lightbox>
                   </View>
@@ -277,8 +293,13 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
       backgroundColor:'white'
     },
     caption:{
+      flex:1,
+      width:WINDOW_WIDTH,
       position:'absolute',
-      bottom:-20
+      bottom:60,
+      padding:20,
+      borderBottomColor:'white',
+      borderBottomWidth:1
     },
     location:{
       color: '#696969',

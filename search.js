@@ -99,15 +99,47 @@ var search = React.createClass({
     this.setState({
       selectedTags: toReplace
     });
-  },
-  displayGuides: function(){
-    /*
+    var displayedGuides = this.state.displayedGuides;
     var state = this.state.selectedTags.state.name;
     var area = this.state.selectedTags.state.area;
     var difficulty = this.state.selectedTags.difficulty;
     var day_length = this.state.selectedTags.day_length;
     var hike_type = this.state.selectedTags.hike_type;
     let guides = realm.objects('Guide');
+    if(this.state.searchQuery!=''){
+    for(var guide in displayedGuides){
+      if(displayedGuides[guide].display){
+        var item = realm.objects('Guide').filtered('name=$0', guide)[0];
+      var contains_difficulty = false;
+      var contains_day_length = false;
+      var contains_hike_type = false;
+      var display = false;
+      if(state==null||item.location_loc.state==state){
+        if(area==null||item.location_loc.description==area){
+          item.tags.forEach(function(item_2){
+            if((difficulty==null)||(item_2.name==difficulty)){
+              contains_difficulty=true;
+            }
+            if((day_length)==null||(item_2.name==day_length)){
+              contains_day_length = true;
+            }
+            if((hike_type==null) || (item_2.name==hike_type)){
+              contains_hike_type = true;
+            }
+
+          });
+        }
+      }
+        if (!((contains_hike_type)&&(contains_day_length)&&(contains_difficulty))){
+          displayedGuides[item.name].display=false;
+        }
+        else{
+          displayedGuides[item.name].display=true;
+        }
+      }
+    };
+  }
+  else{
     guides.forEach(function(item){
       var contains_difficulty = false;
       var contains_day_length = false;
@@ -129,17 +161,28 @@ var search = React.createClass({
           });
         }
       }
-        var dis = ((contains_hike_type)&&(contains_day_length)&&(contains_difficulty)) ? 1 : 0;
-          realm.write(()=>{
-            item.display = dis
-          });
+        if (!((contains_hike_type)&&(contains_day_length)&&(contains_difficulty))){
+          displayedGuides[item.name].display=false;
+        }
+        else{
+          displayedGuides[item.name].display=true;
+        }
 
     });
-
-    guides = realm.objects('Guide').filtered('display=1');
-    */
-    var guideElements = [];
+  
+  }
+    this.setState({
+      displayedGuides:displayedGuides
+    });
+  },
+  displayGuides: function(){
     var displayedGuides = this.state.displayedGuides;
+
+
+
+
+    var guideElements = [];
+
     var i=0;
     for(var item in displayedGuides){
       if(displayedGuides[item].display){
