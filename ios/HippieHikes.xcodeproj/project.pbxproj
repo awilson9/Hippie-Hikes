@@ -40,6 +40,7 @@
 		AB2CA91F287D401DBB810CA3 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 068CB148D2B4418C9D1CB182 /* MaterialIcons.ttf */; };
 		B6C310ECF81C4CEAA52D201B /* libRCTMapboxGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BC627DF79049A998C080D5 /* libRCTMapboxGL.a */; };
 		BDA1B9A3FA504F96B0D2C67D /* libRCTYouTube.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C069F15E0D9448D7842A828E /* libRCTYouTube.a */; };
+		CAEAA04B15DD484C90CFB3CC /* libRNLocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E0943E0AFF04A64890246BF /* libRNLocation.a */; };
 		E877A9A8D7404FF3B0ED98FF /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D86DF66FAB324AB78A6BA347 /* EvilIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -163,6 +164,13 @@
 			remoteGlobalIDString = F60690131CA2766F0003FB26;
 			remoteInfo = RealmReact;
 		};
+		19F0BC671D53CDEF0006DA38 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04E84C2118EF4A5C965640AD /* RNLocation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNLocation;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -203,6 +211,7 @@
 		00E356EE1AD99517003FC87E /* HippieHikesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HippieHikesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* HippieHikesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HippieHikesTests.m; sourceTree = "<group>"; };
+		04E84C2118EF4A5C965640AD /* RNLocation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNLocation.xcodeproj; path = "../node_modules/react-native-location/RNLocation.xcodeproj"; sourceTree = "<group>"; };
 		068CB148D2B4418C9D1CB182 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		0EFE59459CB04073B4C900AD /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		1317F01683F644DD9701099E /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -228,6 +237,7 @@
 		63A6C468DB5D4EF780A42534 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		6AA99867A5424F20B4285621 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7E0943E0AFF04A64890246BF /* libRNLocation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNLocation.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		89788F3B7C30480996DBF74C /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		8988CE4DCF2640938AF50A17 /* libRealmReact.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRealmReact.a; sourceTree = "<group>"; };
@@ -271,6 +281,7 @@
 				BDA1B9A3FA504F96B0D2C67D /* libRCTYouTube.a in Frameworks */,
 				45BE072EB9B640DCAB445529 /* libRNSearchBar.a in Frameworks */,
 				93BFD8B0E6BD476DBD9424EC /* libRNVectorIcons.a in Frameworks */,
+				CAEAA04B15DD484C90CFB3CC /* libRNLocation.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +433,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		19F0BC541D53CDEF0006DA38 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F0BC681D53CDEF0006DA38 /* libRNLocation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		4A423D72ACEF4287A756935B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -458,6 +477,7 @@
 				9A595A1B44CF46A6BEC14AA3 /* RCTYouTube.xcodeproj */,
 				356A7BB45CD446CFA92CD337 /* RNSearchBar.xcodeproj */,
 				FC4A9C3DDA8A40B19EA764CE /* RNVectorIcons.xcodeproj */,
+				04E84C2118EF4A5C965640AD /* RNLocation.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -564,6 +584,14 @@
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 8FPWGGM44T;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "HippieHikes" */;
@@ -633,6 +661,10 @@
 				{
 					ProductGroup = 19D2C7641D48351E008B55A8 /* Products */;
 					ProjectRef = 268934F51C10442688D797C3 /* RealmReact.xcodeproj */;
+				},
+				{
+					ProductGroup = 19F0BC541D53CDEF0006DA38 /* Products */;
+					ProjectRef = 04E84C2118EF4A5C965640AD /* RNLocation.xcodeproj */;
 				},
 				{
 					ProductGroup = 19418D321D4BC6C30014F8B5 /* Products */;
@@ -762,6 +794,13 @@
 			fileType = archive.ar;
 			path = libRealmReact.a;
 			remoteRef = 19D2C77E1D48351E008B55A8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F0BC681D53CDEF0006DA38 /* libRNLocation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNLocation.a;
+			remoteRef = 19F0BC671D53CDEF0006DA38 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
@@ -897,6 +936,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HippieHikes.app/HippieHikes";
@@ -918,6 +958,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HippieHikes.app/HippieHikes";
@@ -928,6 +969,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -942,6 +985,7 @@
 					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-location",
 				);
 				INFOPLIST_FILE = HippieHikes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -952,6 +996,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = HippieHikes;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -959,6 +1004,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -972,6 +1019,7 @@
 					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-location",
 				);
 				INFOPLIST_FILE = HippieHikes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -982,6 +1030,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = HippieHikes;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -1028,6 +1077,7 @@
 					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-location",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1073,6 +1123,7 @@
 					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-location",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

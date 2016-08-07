@@ -6,54 +6,36 @@ import {
   Text,
   StatusBar,
   View,
-  ScrollView
+  ScrollView,
+  TouchableHighlight,
+  TextInput
 } from 'react-native';
 
 const accessToken = 'pk.eyJ1IjoiYXdpbHNvbjkiLCJhIjoiY2lyM3RqdGloMDBrbTIzbm1haXI2YTVyOCJ9.h62--AvCDGN25QoAJm6sLg';
 Mapbox.setAccessToken(accessToken);
 var MapboxClient = require('mapbox/lib/services/directions');
 var client = new MapboxClient(accessToken);
+import realm from './realm/index';
+var guide = require('./guide');
 
-class GuideMap extends Component {
+import {DeviceEventEmitter}  from 'react-native';
+var { RNLocation: Location } = require('NativeModules');
+
+
+class CreateMaps extends Component {
   state = {
-    initialPosition: 'unknown',
-    lastPosition: 'unknown',
     center: {
-      latitude: this.props.latitude,
-      longitude: this.props.longitude
+      latitude: 40.391617,
+      longitude: -111.850766
     },
-    zoom: 10,
+    zoom: 8,
     userTrackingMode: Mapbox.userTrackingMode.none,
-    annotations: [{
-      coordinates: [this.props.latitude, this.props.longitude],
-      type: 'point',
-      title: this.props.name + ' trailhead',
-      id:'hello',
-      rightCalloutAccessory: {
-        source: { uri: 'https://cldup.com/9Lp0EaBw5s.png' },
-        height: 25,
-        width: 25
-      },
-      trail:null
-
-    }]
+    selectedTrail:'none',
+    annotations:[],
+    location:null,
+    locationStarted:false,
+    index:0
   };
-  componentDidMount() {
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      this.getDirectionstoTrailhead(position, this.updateState);
-      this.getDirectionsTrail(this.updateState);
-      var initialPosition = position;
-      this.setState({initialPosition});
-    },
-    (error) => alert(error.message),
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-  );
-  this.watchID = navigator.geolocation.watchPosition((position) => {
-    var lastPosition = position;
-    this.setState({lastPosition});
-  });
-}
 
   onRegionDidChange = (location) => {
     this.setState({ currentZoom: location.zoomLevel });
@@ -65,11 +47,13 @@ class GuideMap extends Component {
   onUpdateUserLocation = (location) => {
     console.log('onUpdateUserLocation', location);
   };
-  onOpenAnnotation = (annotation) => {
-    console.log('onOpenAnnotation', annotation);
+  onOpenAnnotation = (annot) => {
+      this.setState({
+        selectedTrail: annot.id
+    });
   };
   onRightAnnotationTapped = (e) => {
-    console.log('onRightAnnotationTapped', e);
+    this._navigate(e.id);
   };
   onLongPress = (location) => {
     console.log('onLongPress', location);
@@ -89,7 +73,69 @@ class GuideMap extends Component {
     this._offlineErrorSubscription = Mapbox.addOfflineErrorListener(error => {
       console.log('offline error', error);
     });
+    Location.requestAlwaysAuthorization();
+    Location.setDistanceFilter(10.0);
   }
+  createAnnotationFromTracking(){
+    let trail = realm.objects('Location').filtered('trail="trail"')[0];
+    var coords = [];
+    trail.coordinates.forEach(function(coordinate){
+      coords.push([coordinate.latitude,coordinate.longitude]);
+    })
+    this.setState({
+      annotations:[{
+        coordinates:coords,
+        type:'polyline',
+        id:'trail',
+        strokeColor:'#2ebbbe',
+        strokeWidth:4,
+        strokeAlpha:.5
+      }]
+    })
+  }
+  stopUpdatingLocation(){
+    Location.stopUpdatingLocation();
+    this.setState({
+      locationStarted:false,
+      index:0
+    })
+  }
+  startTracking(event){
+    Location.startUpdatingLocation();
+    if(!this.state.locationStarted){
+      this.setState({
+        locationStarted:true
+      });
+      realm.write(() => {
+        realm.create('Location',{
+            trail: event.nativeEvent.text
+        });
+      });
+      this.setState({
+        location:realm.objects('Location').filtered('trail = $0',event.nativeEvent.text)[0]
+      });
+    }
+    var locations = DeviceEventEmitter.addListener(
+      'locationUpdated',
+      (location) => {
+
+        realm.write(() => {
+          let coord = realm.create('Coordinates', {
+            key:this.state.index,
+            latitude:location.coords.latitude,
+            longitude:location.coords.longitude,
+            altitude:location.coords.altidude
+          });
+          this.state.location.coordinates.push(coord);
+          this.setState({
+            index:this.state.index+1
+          });
+        });
+
+      })
+      }
+
+
 
   componentWillUnmount() {
     this._offlineProgressSubscription.remove();
@@ -97,76 +143,10 @@ class GuideMap extends Component {
     this._offlineErrorSubscription.remove();
   }
 
-
-  getDirectionsTrail(updateState){
-    var waypoints = [
-      {latitude:this.props.latitude, longitude:this.props.longitude},
-      {latitude:this.props.endLat, longitude:this.props.endLong}
-    ];
-    var options = {
-      profile:'mapbox.walking',
-      geometry:'geojson'
-    }
-    var self = this;
-    client.getDirections(waypoints, options, function(err, results){
-      updateState(results.routes[0].geometry.coordinates, self, false);
-    })
-  }
-
-  getDirectionstoTrailhead(position, updateState) {
-    var waypoints = [
-      {latitude:position.coords.latitude, longitude:position.coords.longitude},
-      {latitude:this.props.latitude, longitude:this.props.longitude}
-    ];
-
-    var options = {
-      profile:'mapbox.driving',
-      geometry:'geojson'
-    }
-    var self = this;
-    client.getDirections(waypoints, options, function(err, results){
-        updateState(results.routes[0].geometry.coordinates, self, true);
-
-      });
-
-}
-
-updateState(coords, self, directions){
-  var toSet = [];
-  coords.forEach(function(coord, i){
-    toSet.push([coord[1],coord[0]]);
-    }
-  )
-  var type = "";
-  var color = "";
-  if(directions){
-    type = "directions";
-    color = "#2ebbbe";
-  }
-  else {
-    type = "trail"
-    color="#2F4F4F";
-  }
-  self.setState({
-    annotations:[...self.state.annotations, {
-      coordinates:toSet,
-      type:'polyline',
-      strokeColor: color,
-      strokeWidth:4,
-      strokeAlpha:.5,
-      id:type
-    }]
-  });
-}
-
-
-
-
   render() {
-
+    var textInput = (this.state.getInput) ? (<TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1}} onSubmitEditing={(event) => this.startTracking(event)}/>) : null;
     StatusBar.setHidden(true);
     return (
-
       <View style={styles.container}>
         <MapView
           ref={map => { this._map = map; }}
@@ -193,16 +173,18 @@ updateState(coords, self, directions){
         />
       <ScrollView style={styles.scrollView}>
         {this._renderButtons()}
+        {textInput}
       </ScrollView>
       </View>
     );
   }
 
+
   _renderButtons() {
     return (
       <View>
 
-        <Text onPress={() => {
+        <TouchableHighlight  onPress={() => {
             Mapbox.addOfflinePack({
               name: 'test',
               type: 'bbox',
@@ -217,9 +199,11 @@ updateState(coords, self, directions){
               console.log(err);
             });
         }}>
+        <Text style={styles.textborder}>
           Create offline pack
-        </Text>
-        <Text onPress={() => {
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight  onPress={() => {
             Mapbox.getOfflinePacks()
               .then(packs => {
                 console.log(packs);
@@ -227,10 +211,11 @@ updateState(coords, self, directions){
               .catch(err => {
                 console.log(err);
               });
-        }}>
+        }}><Text style={styles.textborder}>
           Get offline packs
-        </Text>
-        <Text onPress={() => {
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight  onPress={() => {
             Mapbox.removeOfflinePack('test')
               .then(info => {
                 if (info.deleted) {
@@ -243,18 +228,40 @@ updateState(coords, self, directions){
                 console.log(err);
               });
         }}>
-          Remove pack with name 'test'
-        </Text>
-        <Text>User tracking mode is {this.state.userTrackingMode}</Text>
+          <Text style={styles.textborder}>Remove pack with name 'test' </Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.setState({getInput:true})}>
+          <Text style={styles.textborder}>
+            Start tracking Location
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.stopUpdatingLocation()}>
+          <Text style={styles.textborder}>
+            Stop tracking location
+          </Text>
+        </TouchableHighlight>
+        <Text onPress={()=>this.createAnnotationFromTracking()}>Create Annotation</Text>
+
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  textborder:{
+    borderWidth: 2,
+    borderColor:'#2ebbbe',
+    overflow:'hidden',
+    fontSize:15,
+     color: '#696969',
+    padding: 15,
+    borderRadius:4,
+    margin:3
+    },
   container: {
     flex: 1,
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    marginTop:20
   },
   map: {
     flex: 1
@@ -264,4 +271,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = GuideMap;
+module.exports = CreateMaps;

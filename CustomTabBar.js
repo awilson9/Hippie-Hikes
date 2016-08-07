@@ -61,16 +61,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 10,
+    backgroundColor:'#2ebbbe'
   },
   tabs: {
     height: 45,
     flexDirection: 'row',
     paddingTop: 5,
-    borderWidth: 1,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderBottomColor: 'rgba(0,0,0,0.05)',
+    backgroundColor:'#2ebbbe',
+    borderTopColor:'black',
+    borderTopWidth:.1
   },
 });
 

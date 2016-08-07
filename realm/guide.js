@@ -22,6 +22,7 @@ let diff = realm.objects('Tag').filtered('name="Difficult"')[0];
 let mod = realm.objects('Tag').filtered('name="Moderate"')[0];
 let all = realm.objects('Tag').filtered('name="All Season"')[0];
 let lake = realm.objects('Tag').filtered('name="Lake"')[0];
+let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
 
   realm.write(() => {
     realm.create('ImageDescription', {
@@ -141,7 +142,9 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
       display:0,
       lat:40.6336,
       long:-111.724,
-      displayedElsewhere:0
+      displayedElsewhere:0,
+      trailEndLat:40.606675,
+      trailEndLong:-111.691524
     });
   });
 
@@ -708,6 +711,24 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
     });
   });
 
+  realm.write(() => {
+    realm.create('Guide',{
+      name:'sundial',
+      name_description:'Sundial and Dromedary Peak',
+      location_loc:bear,
+      closest_to:'SLC',
+      distance:6.6,
+      elevation:1250,
+      description:'August is a great time to do this hike. The trail is abundant with wildflowers. It is a fairly flat and relaxing hike with a beautiful view of the lake at the end. Do some exploring around the lake when you reach it.',
+      img_descriptions:guides,
+      gallSize:18,
+      tags:[out, diff, single, mountain],
+      display:0,
+      lat:40.6336,
+      long:-111.724,
+      displayedElsewhere:0
+    });
+  });
 
 
   realm.write(() => {
@@ -819,6 +840,16 @@ let lake = realm.objects('Tag').filtered('name="Lake"')[0];
   realm.write(() => {
     realm.objects('Guide').filtered('name = "whitepine"')[0].similar_hikes.push(
     realm.objects('Guide').filtered('name = "catherine"')[0]
+    );
+  });
+  realm.write(() => {
+    realm.objects('Guide').filtered('name = "sundial"')[0].similar_hikes.push(
+    realm.objects('Guide').filtered('name = "blanche"')[0]
+    );
+  });
+  realm.write(() => {
+    realm.objects('Guide').filtered('name = "sundial"')[0].similar_hikes.push(
+    realm.objects('Guide').filtered('name = "grandaddy"')[0]
     );
   });
 

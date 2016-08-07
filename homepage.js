@@ -20,6 +20,7 @@ var Swiper = require('react-native-swiper');
 var NavigationBar = require('react-native-navbar');
 
 var guide = require('./guide');
+var CreateMaps = require('./createMaps')
 
 var homepage = React.createClass({
   _navigate(name){
@@ -30,10 +31,15 @@ var homepage = React.createClass({
       }
     })
   },
+  _navigateCreateMaps(){
+    this.props.navigator.push({
+      component:CreateMaps
+    })
+  },
   constructNearMe(){
     var toReturn=[];
     var row_num = 1;
-    var num_in_row = 1;
+    var num_in_row = 2;
     var order_last = 0;
     this.props.shortest.forEach(function(guide, i){
       toReturn.push(
@@ -145,40 +151,37 @@ var homepage = React.createClass({
             borderBottomWidth:.1,
           }}
     />
+    <Text onPress={()=>this._navigateCreateMaps()}>Create maps</Text>
     <ScrollView style={{flex:1}}
     automaticallyAdjustContentInsets={false}
     contentInset={{bottom:49}}>
       {this.clearDisplay()}
       <NavigationBar
-      title={<Text>Favorited</Text>}
-      style={{borderBottomColor:'black',
-              borderBottomWidth:.1}}
+      title={<Text style={styles.header}>Favorited</Text>}
+      style={styles.navbar}
       />
       <View style={styles.descriptions}>
         {this.constructFavorites()}
       </View>
 
         <NavigationBar
-        title={<Text>Near Me</Text>}
-        style={{borderBottomColor:'black',
-                borderBottomWidth:.1}}
+        title={<Text style={styles.header}>Near Me</Text>}
+        style={styles.navbar}
         />
         <View style={styles.descriptions}>
         {this.constructNearMe()}
         </View>
         <NavigationBar
-        title={<Text>Featured</Text>}
-        style={{borderBottomColor:'black',
-                borderBottomWidth:.1}}
+        title={<Text style={styles.header}>Featured</Text>}
+        style={styles.navbar}
         />
 
         <View style={styles.descriptions}>
 
         </View>
         <NavigationBar
-        title={<Text>New Guides</Text>}
-        style={{borderBottomColor:'black',
-                borderBottomWidth:.1}}
+        title={<Text style={styles.header}>New Guides</Text>}
+        style={styles.navbar}
         />
         <View style={styles.descriptions}>
 
@@ -193,10 +196,13 @@ var styles = StyleSheet.create({
   swiper:{
     marginTop:20
   },
+  navbar:{
+    borderBottomColor:'black',
+    borderBottomWidth:.1,
+    backgroundColor:'#2ebbbe'
+  },
   header:{
-    fontSize:30,
-    position:'relative',
-    top:15
+    color:'white'
   },
   descriptionWrapper:{
     flexDirection:'column',

@@ -19,11 +19,9 @@ var guide = require('./guide');
 
 class IndexMap extends Component {
   state = {
-    initialPosition: 'unknown',
-    lastPosition: 'unknown',
     center: {
-      latitude: 40.391617,
-      longitude: -111.850766
+      latitude: this.props.position.coords.latitude,
+      longitude: this.props.position.coords.longitude
     },
     zoom: 8,
     userTrackingMode: Mapbox.userTrackingMode.none,
@@ -39,20 +37,9 @@ class IndexMap extends Component {
     })
   };
   componentDidMount() {
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      this.calculateClosestRoutes(position, this.updateState);
-      var initialPosition = position;
-      this.setState({initialPosition});
-    },
-    (error) => alert(error.message),
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-  );
-  this.watchID = navigator.geolocation.watchPosition((position) => {
-    var lastPosition = position;
-    this.setState({lastPosition});
-  });
-}
+    this.displayTrailheads();
+  }
+
 
   onRegionDidChange = (location) => {
     this.setState({ currentZoom: location.zoomLevel });
@@ -90,6 +77,7 @@ class IndexMap extends Component {
     this._offlineErrorSubscription = Mapbox.addOfflineErrorListener(error => {
       console.log('offline error', error);
     });
+
   }
 
   componentWillUnmount() {
@@ -98,73 +86,38 @@ class IndexMap extends Component {
     this._offlineErrorSubscription.remove();
   }
 
-
-
-
-
-
-    calculateClosestRoutes(position, updateState){
-      let guides = realm.objects('Guide');
-      var routes = [];
-      var options = {
-        profile:'mapbox.driving',
-        geometry:'geojson'
-      }
-      var self = this;
-      guides.forEach(function(guide,i){
-
-          var waypoints = [{latitude:position.coords.latitude, longitude:position.coords.longitude},
-              {latitude: guide.lat, longitude:guide.long}];
-              client.getDirections(waypoints,options, function(err, results){
-                  updateState(results.routes[0].geometry.coordinates, self, guide.name_description, results.routes[0].duration/60, guide.name);
-              });
-
+displayTrailheads(){
+  var trailheads = [];
+  for(var trail in this.props.directions){
+    var duration = this.props.directions[trail].routes[0].duration/60;
+    var hours = Math.floor(duration/60);
+    var minutes = Math.floor(duration - (hours*60));
+    var time = "";
+    if(hours<1){
+      time = time + minutes + " minutes away";
+    }
+    else if(hours==1){
+      time = time + hours + " hour " + minutes + " minutes away";
+    }
+    else{
+      time = time + hours + " hours " + minutes + " minutes away";
+    }
+    var coordinates = this.props.directions[trail].routes[0].geometry.coordinates;
+    trailheads.push({
+        coordinates:[coordinates[coordinates.length-1][1], coordinates[coordinates.length-1][0]],
+        type:'point',
+        id:trail,
+        title:trail + ' trailhead',
+        subtitle: time,
+        rightCalloutAccessory: {
+          source: { uri: 'https://cldup.com/9Lp0EaBw5s.png' },
+          height: 25,
+          width: 25
+        },
       });
-
-    }
-
-updateState(coords, self,description, duration, name){
-  var hours = Math.floor(duration/60);
-  var minutes = Math.floor(duration - (hours*60));
-  var time = ""
-  if(hours<1){
-    time = time + minutes + " minutes away";
   }
-  else if(hours==1){
-    time = time + hours + " hour " + minutes + " minutes away";
-  }
-  else{
-    time = time + hours + " hours " + minutes + " minutes away";
-  }
-
-
-  var toSet = [];
-  coords.forEach(function(coord, i){
-    toSet.push([coord[1],coord[0]]);
-    }
-  )
-  self.setState({
-    annotations:[...self.state.annotations, {
-      coordinates:toSet,
-      type:'polyline',
-      strokeColor: '#2ebbbe',
-      strokeWidth:0,
-      strokeAlpha:.5,
-      id:name + 'directions'
-    },
-    {
-      coordinates:toSet[toSet.length-1],
-      type:'point',
-      id:name,
-      title:description + ' trailhead',
-      subtitle: time,
-      rightCalloutAccessory: {
-        source: { uri: 'https://cldup.com/9Lp0EaBw5s.png' },
-        height: 25,
-        width: 25
-      },
-    }
-  ]
+  this.setState({
+    annotations:trailheads
   });
 }
 displayDirections(){
@@ -173,12 +126,21 @@ displayDirections(){
     if((annotation.id)===(this.state.selectedTrail)){
       toDisplay.push(annotation);
     }
-    else if((annotation.id===(this.state.selectedTrail+'directions'))){
-      var toPush = annotation;
-      toPush.strokeWidth = 4;
-      toDisplay.push(toPush);
-    }
   }, this);
+
+  var direction = this.props.directions[this.state.selectedTrail];
+  var toSet = [];
+  direction.routes[0].geometry.coordinates.forEach(function(coord){
+    toSet.push([coord[1], coord[0]]);
+  });
+  toDisplay.push({
+    coordinates:toSet,
+    type:'polyline',
+    id:this.state.selectedTrail + 'directions',
+    strokeColor:'#2ebbbe',
+    strokeWidth:4,
+    strokeAlpha:.5
+  })
   this.setState({
     annotations:toDisplay
   });
@@ -202,7 +164,7 @@ displayDirections(){
           scrollEnabled={true}
           zoomEnabled={true}
           showsUserLocation={true}
-          styleURL={Mapbox.mapStyles.basic}
+          styleURL={"mapbox://styles/mapbox/outdoors-v9"}
           userTrackingMode={this.state.userTrackingMode}
           annotations={this.state.annotations}
           annotationsAreImmutable
@@ -296,7 +258,8 @@ const styles = StyleSheet.create({
     },
   container: {
     flex: 1,
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    marginTop:20
   },
   map: {
     flex: 1

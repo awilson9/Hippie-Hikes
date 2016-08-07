@@ -71,6 +71,11 @@ function createTags(realm){
       name: 'Lake'
     });
   });
+  realm.write(()=>{
+    realm.create('Tag',{
+      name:'Mountain'
+    });
+  });
 
 }
 exports.createTags = createTags;

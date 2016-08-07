@@ -169,7 +169,7 @@ var search = React.createClass({
         }
 
     });
-  
+
   }
     this.setState({
       displayedGuides:displayedGuides
@@ -433,7 +433,7 @@ var styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor:'white',
     borderWidth:9,
-    borderColor:'#E4E4E4'
+    borderColor:'#2ebbbe'
   },
   textborder:{
     borderWidth: 2,

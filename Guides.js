@@ -34,7 +34,7 @@ var guides = React.createClass({
     return{
       initialPosition: 'unknown',
       lastPosition: 'unknown',
-      directions:[],
+      directions:{},
       shortest:[]
     }
   },
@@ -68,9 +68,10 @@ var guides = React.createClass({
       var waypoints = [{latitude:position.coords.latitude, longitude:position.coords.longitude},
           {latitude: guide.lat, longitude:guide.long}];
           client.getDirections(waypoints,options, function(err, results){
-            directions.push( {results: results, guide:guide.name});
-            self.setState({directions:directions});
-              if(directions.length==guides.length){
+            directions[guide.name] = results;
+            var length = Object.keys(directions).length;
+              if(length==guides.length){
+                self.setState({directions:directions});
                 self.calculateShortest(self);
               }
             })
@@ -79,12 +80,17 @@ var guides = React.createClass({
   },
   calculateShortest(self){
     var routes = self.state.directions;
-    routes.sort(function(a, b){
-      return a.results.routes[0].duration - b.results.routes[0].duration;
+    var toSort = [];
+    for (var route in routes){
+      toSort.push([routes[route], route]);
+    }
+    toSort.sort(function(a, b){
+      return a[0].routes[0].duration - b[0].routes[0].duration;
     });
+
     var shortest = [];
     for(var i=0;i<5;i++){
-      shortest.push(routes[i].guide);
+      shortest.push(toSort[i][1]);
     }
     self.setState({
       shortest:shortest
@@ -93,8 +99,9 @@ var guides = React.createClass({
   render() {
     return (
       <ScrollableTabView
-      style={{marginTop: 20, }}
+      style={{marginTop: 20,}}
       initialPage={0}
+      tabBarBackgroundColor={'#2ebbbe'}
       tabBarPosition={'bottom'}
       renderTabBar={() => <CustomTabBar />}
       >
@@ -111,8 +118,10 @@ var guides = React.createClass({
           />
 
         <IndexMap tabLabel="ios-compass"
-          navigator={this.props.navigator}/>
-
+          navigator={this.props.navigator}
+          directions = {this.state.directions}
+          position = {this.state.lastPosition}
+          />
 
         </ScrollableTabView>
            );

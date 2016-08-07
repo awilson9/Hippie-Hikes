@@ -20,8 +20,8 @@ var NavigationBar = require('react-native-navbar');
 
 import realm from './realm/index';
 import YouTube from 'react-native-youtube'
-import Icon from 'react-native-vector-icons/Ionicons'
-
+import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 var WINDOW_WIDTH = Dimensions.get('window').width;
 
@@ -40,13 +40,15 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
          }
        })
      },
-     _navigateMap(lat, long){
+     _navigateMap(lat, long, endlat, endlong){
       this.props.navigator.push({
       component:map,
        passProps:{
          name:this.props.name,
          latitude:lat,
-         longitude:long
+         longitude:long,
+         endLat:endlat,
+         endLong:endlong
        }
      });
      },
@@ -206,8 +208,10 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
                 <View style={{flex:1}}>
 
                 <NavigationBar
-                title={{title:this.state.site.name_description}}
-                leftButton={<Icon style={{marginLeft:5}} size={25} onPress={()=>this.props.navigator.pop()} name="ios-arrow-back"/>}
+                title={<Text style={{color:'white'}}>{this.state.site.name_description}</Text>}
+                style={{backgroundColor:'#2ebbbe'}}
+                leftButton={<Icon style={{marginLeft:10, marginTop:10}} size={25} onPress={()=>this.props.navigator.pop()} name="ios-arrow-back"/>}
+                rightButton={<MaterialIcon style={{marginRight:10, marginTop:10}} name="near-me" size={25} onPress={()=>this._navigateMap(this.state.site.lat, this.state.site.long, this.state.site.trailEndLat, this.state.site.trailEndLong)}/>}
                     />
 
 
@@ -279,7 +283,8 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
     bottomBar:{
       height:50,
       flexDirection:'row',
-      alignItems:'center'
+      alignItems:'center',
+      backgroundColor:'#2ebbbe'
     },
     favorite:{
       alignItems:'center',

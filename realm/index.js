@@ -11,6 +11,24 @@ const TagSchema =  {
   }
 };
 
+const CoordinatesSchema = {
+  name:'Coordinates',
+  properties:{
+    key:'int',
+    latitude:'double',
+    longitude:'double',
+    altitude:'double'
+  }
+};
+
+const LocationSchema = {
+  name:'Location',
+  properties:{
+    trail:'string',
+    coordinates:{type:'list', objectType:'Coordinates'}
+  }
+};
+
 const LocalSchema = {
   name:'Region',
   properties:{
@@ -52,7 +70,9 @@ const GuideSchema = {
     downloaded:{type:'bool', default:false},
     lat:'double',
     long:'double',
-    displayedElsewhere:'int'
+    displayedElsewhere:'int',
+    trailEndLat:{type:'double',optional:true},
+    trailEndLong:{type:'double',optional:true}
 
   }
 };
@@ -63,7 +83,7 @@ const CreatedSchema = {
     created:'bool',
     }
 };
-let realm = new Realm({schema:[TagSchema, GuideSchema, CreatedSchema, ImageDescriptionSchema,LocalSchema]});
+let realm = new Realm({schema:[TagSchema, GuideSchema, CreatedSchema, ImageDescriptionSchema,LocalSchema, CoordinatesSchema, LocationSchema]});
 
 
 
