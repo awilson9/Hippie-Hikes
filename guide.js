@@ -14,7 +14,7 @@ import { AppRegistry,
         } from 'react-native';
 
 var Lightbox = require('react-native-lightbox');
-var map = require('./maps');
+var Map = require('./maps');
 var Swiper = require('react-native-swiper');
 var NavigationBar = require('react-native-navbar');
 
@@ -24,7 +24,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 var WINDOW_WIDTH = Dimensions.get('window').width;
-
+var WINDOW_HEIGHT = Dimensions.get('window').height;
 
 
 
@@ -40,15 +40,12 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
          }
        })
      },
-     _navigateMap(lat, long, endlat, endlong){
+     _navigateMap(waypoints){
       this.props.navigator.push({
       component:map,
        passProps:{
          name:this.props.name,
-         latitude:lat,
-         longitude:long,
-         endLat:endlat,
-         endLong:endlong
+         waypoints:waypoints
        }
      });
      },
@@ -62,7 +59,8 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
      favorited:"",
      downloaded:"",
      site:null,
-     displayCaption:false
+     displayCaption:false,
+     mapFullScreen:false,
    }
  },
  getCaption(img_index){
@@ -95,6 +93,22 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
      favorited:favorited,
      downloaded:downloaded,
    });
+ },
+  mapStyle(){
+   if(!this.state.mapFullScreen){
+     return{
+
+         paddingTop:10,
+         paddingBottom:10,
+         height:250
+
+     }
+   }
+   else{
+     return{
+       height:WINDOW_HEIGHT
+     }
+   }
  },
   changeFavorited(){
     if(this.state.favorited==="ios-heart"){
@@ -190,14 +204,14 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
             var sim_hikes = [];
               sim_hikes.push(
                 <View key={1}>
-                  <TouchableHighlight onPress={() => this._navigate(this.state.site.similar_hikes[0].name, this.state.site.similar_hikes[0].gallSize)}>
+                  <TouchableHighlight onPress={() => this.props.guideHandler(this.state.site.similar_hikes[0].name)}>
                     <Image style = {styles.contain} resizeMode="contain" source = {{uri:this.state.site.similar_hikes[0].name + 'site'}}/>
                   </TouchableHighlight>
                 </View>
               );
               sim_hikes.push(
                 <View key={2}>
-                  <TouchableHighlight onPress={() => this._navigate(this.state.site.similar_hikes[1].name, this.state.site.similar_hikes[1].gallSize)}>
+                  <TouchableHighlight onPress={() => this.props.guideHandler(this.state.site.similar_hikes[1].name)}>
                     <Image style = {styles.contain} resizeMode="contain" source = {{uri:this.state.site.similar_hikes[1].name + 'site'}}/>
                   </TouchableHighlight>
                 </View>
@@ -207,18 +221,14 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
               return(
                 <View style={{flex:1}}>
 
-                <NavigationBar
-                title={<Text style={{color:'white'}}>{this.state.site.name_description}</Text>}
-                style={{backgroundColor:'#2ebbbe'}}
-                leftButton={<Icon style={{marginLeft:10, marginTop:10}} size={25} onPress={()=>this.props.navigator.pop()} name="ios-arrow-back"/>}
-                rightButton={<MaterialIcon style={{marginRight:10, marginTop:10}} name="near-me" size={25} onPress={()=>this._navigateMap(this.state.site.lat, this.state.site.long, this.state.site.trailEndLat, this.state.site.trailEndLong)}/>}
-                    />
+
 
 
                 <ScrollView style = {styles.background}>
 
                   <View style={{marginBottom:50}}>
                     <Image style = {styles.contain} resizeMode="contain" source={{uri:imgheader}}/>
+                    <Text style={[styles.btn,styles.btnModal]} onPress={()=>this.props.closeModal()}>X</Text>
                   </View>
                   <View style={{alignItems:'center', marginBottom:40}}>
                     <Text style={styles.location}>{this.state.site.name_description}</Text>
@@ -236,11 +246,18 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
                     <Text style={styles.textborder}>{this.state.site.distance} Miles</Text>
                     <Text style={styles.textborder}>{this.state.site.elevation} ft. gain</Text>
                     {tags}
-                    <TouchableHighlight onPress = {() => this._navigateMap(this.state.site.lat, this.state.site.long)}>
-                      <Text style = {styles.textborder}>Click For Directions</Text>
-                    </TouchableHighlight>
+
+
 
                 </ScrollView>
+                <TouchableHighlight onPress={()=>this.setState({
+                  mapFullScreen:true
+                })} >
+
+                <View style={this.mapStyle()}>
+                <Map name={this.state.site.name}
+                     waypoints={this.state.site.waypoints}
+                     /></View></TouchableHighlight>
                   <View style={{paddingBottom:25}}>
                   <Swiper height={240}
                     onMomentumScrollEnd={function(e, state, context){console.log('index:', state.index)}}
@@ -257,7 +274,6 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
 
                   <Text style={styles.similarHikes}>Similar Hikes</Text>
                   {sim_hikes}
-
                 </ScrollView>
                 <View style={styles.bottomBar}>
                   <View style={styles.favorite}>
@@ -280,6 +296,22 @@ var WINDOW_WIDTH = Dimensions.get('window').width;
 
 
   var styles = StyleSheet.create({
+    btn: {
+     margin: 10,
+     backgroundColor: "#3B5998",
+     padding: 10
+   },
+
+   btnModal: {
+     position: "absolute",
+     top: 0,
+     right: 0,
+     width: 50,
+     height: 50,
+     backgroundColor: "transparent",
+     color:'white',
+     fontSize:40
+   },
     bottomBar:{
       height:50,
       flexDirection:'row',

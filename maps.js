@@ -19,13 +19,13 @@ class GuideMap extends Component {
     initialPosition: 'unknown',
     lastPosition: 'unknown',
     center: {
-      latitude: this.props.latitude,
-      longitude: this.props.longitude
+      latitude: this.props.waypoints[0].latitude,
+      longitude: this.props.waypoints[0].longitude
     },
-    zoom: 10,
+    zoom: 12,
     userTrackingMode: Mapbox.userTrackingMode.none,
     annotations: [{
-      coordinates: [this.props.latitude, this.props.longitude],
+      coordinates: [this.props.waypoints[0].latitude, this.props.waypoints[0].longitude],
       type: 'point',
       title: this.props.name + ' trailhead',
       id:'hello',
@@ -99,10 +99,10 @@ class GuideMap extends Component {
 
 
   getDirectionsTrail(updateState){
-    var waypoints = [
-      {latitude:this.props.latitude, longitude:this.props.longitude},
-      {latitude:this.props.endLat, longitude:this.props.endLong}
-    ];
+    var waypoints = [];
+    this.props.waypoints.forEach(function(coord){
+      waypoints.push({latitude:coord.latitude, longitude:coord.longitude});
+    });
     var options = {
       profile:'mapbox.walking',
       geometry:'geojson'
@@ -116,7 +116,7 @@ class GuideMap extends Component {
   getDirectionstoTrailhead(position, updateState) {
     var waypoints = [
       {latitude:position.coords.latitude, longitude:position.coords.longitude},
-      {latitude:this.props.latitude, longitude:this.props.longitude}
+      {latitude:this.props.waypoints[0].latitude, longitude:this.props.waypoints[0].longitude}
     ];
 
     var options = {
@@ -191,9 +191,7 @@ updateState(coords, self, directions){
           onLongPress={this.onLongPress}
           onTap={this.onTap}
         />
-      <ScrollView style={styles.scrollView}>
-        {this._renderButtons()}
-      </ScrollView>
+
       </View>
     );
   }

@@ -17,7 +17,9 @@ const CoordinatesSchema = {
     key:'int',
     latitude:'double',
     longitude:'double',
-    altitude:'double'
+    altitude:{type:'double', optional:true},
+    description:{type:'string', optional:true},
+    guide:{type:'string', optional:true}
   }
 };
 
@@ -68,11 +70,8 @@ const GuideSchema = {
     favorited:{type:'bool', default:false},
     new:{type:'bool', default:true},
     downloaded:{type:'bool', default:false},
-    lat:'double',
-    long:'double',
     displayedElsewhere:'int',
-    trailEndLat:{type:'double',optional:true},
-    trailEndLong:{type:'double',optional:true}
+    waypoints:{type:'list', objectType:'Coordinates'}
 
   }
 };

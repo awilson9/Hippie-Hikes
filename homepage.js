@@ -44,7 +44,7 @@ var homepage = React.createClass({
     this.props.shortest.forEach(function(guide, i){
       toReturn.push(
       <TouchableHighlight
-        key={i} onPress={()=>this._navigate(guide)}>
+        key={i} onPress={()=>this.props.guideHandler(guide)}>
         <View>
           <Image source = {{uri:guide+'site'}} resizeMode="cover" style={this.createStyle(row_num,num_in_row,order_last)}/>
         </View>
@@ -75,7 +75,7 @@ var homepage = React.createClass({
       });
       toReturn.push(
       <TouchableHighlight
-        key={i} onPress={()=>this._navigate(guide.name)}>
+        key={i} onPress={()=>this.props.guideHandler(guide.name)}>
         <View>
           <Image source = {{uri:guide.name+'site'}} resizeMode="cover" style={this.createStyle(row_num,num_in_row,order_last)}/>
         </View>

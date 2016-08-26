@@ -7,7 +7,8 @@ import {
   StatusBar,
   View,
   ScrollView,
-  TouchableHighlight
+  TouchableHighlight,
+  Image
 } from 'react-native';
 
 const accessToken = 'pk.eyJ1IjoiYXdpbHNvbjkiLCJhIjoiY2lyM3RqdGloMDBrbTIzbm1haXI2YTVyOCJ9.h62--AvCDGN25QoAJm6sLg';
@@ -15,7 +16,8 @@ Mapbox.setAccessToken(accessToken);
 var MapboxClient = require('mapbox/lib/services/directions');
 var client = new MapboxClient(accessToken);
 import realm from './realm/index';
-var guide = require('./guide');
+var Guide = require('./guide');
+import Modal from 'react-native-modalbox';
 
 class IndexMap extends Component {
   state = {
@@ -26,7 +28,8 @@ class IndexMap extends Component {
     zoom: 8,
     userTrackingMode: Mapbox.userTrackingMode.none,
     selectedTrail:'none',
-    annotations:[]
+    annotations:[],
+    overlayDisplayed:false
   };
   _navigate(name){
     this.props.navigator.push({
@@ -52,12 +55,29 @@ class IndexMap extends Component {
     console.log('onUpdateUserLocation', location);
   };
   onOpenAnnotation = (annot) => {
+    if(this.state.overlayDisplayed){
+      this.refs.overlayModal.close();
       this.setState({
-        selectedTrail: annot.id
-    });
-  };
+        selectedTrail: annot.id,
+      });
+
+    }
+    else{
+      this.setState({
+        selectedTrail: annot.id,
+        overlayDisplayed:true
+      });
+      this.refs.overlayModal.open();
+    }
+  }
+  onClose(){
+    if(this.state.selectedTrail!=null){
+      this.refs.overlayModal.open();
+    }
+  }
   onRightAnnotationTapped = (e) => {
-    this._navigate(e.id);
+    this._map.setCenterCoordinateZoomLevel(e.latitude, e.longitude, 12);
+    this.displayTrail(this.updateState);
   };
   onLongPress = (location) => {
     console.log('onLongPress', location);
@@ -86,10 +106,11 @@ class IndexMap extends Component {
     this._offlineErrorSubscription.remove();
   }
 
+
 displayTrailheads(){
   var trailheads = [];
   for(var trail in this.props.directions){
-    var duration = this.props.directions[trail].routes[0].duration/60;
+    var duration = this.props.directions[trail].results.routes[0].duration/60;
     var hours = Math.floor(duration/60);
     var minutes = Math.floor(duration - (hours*60));
     var time = "";
@@ -102,12 +123,12 @@ displayTrailheads(){
     else{
       time = time + hours + " hours " + minutes + " minutes away";
     }
-    var coordinates = this.props.directions[trail].routes[0].geometry.coordinates;
+    var coordinates = this.props.directions[trail].results.routes[0].geometry.coordinates;
     trailheads.push({
         coordinates:[coordinates[coordinates.length-1][1], coordinates[coordinates.length-1][0]],
         type:'point',
         id:trail,
-        title:trail + ' trailhead',
+        title:this.props.directions[trail].description + ' Trailhead',
         subtitle: time,
         rightCalloutAccessory: {
           source: { uri: 'https://cldup.com/9Lp0EaBw5s.png' },
@@ -118,6 +139,44 @@ displayTrailheads(){
   }
   this.setState({
     annotations:trailheads
+  });
+}
+displayTrail(updateState){
+  var waypoints = [];
+  var guideCoords = realm.objects('Guide').filtered('name=$0', this.state.selectedTrail)[0].waypoints;
+  guideCoords.forEach(function(coord){
+    waypoints.push({latitude:coord.latitude, longitude:coord.longitude});
+  });
+  var options = {
+    profile:'mapbox.walking',
+    geometry:'geojson'
+  }
+  var self = this;
+  client.getDirections(waypoints, options, function(err, results){
+    updateState(results.routes[0].geometry.coordinates, self);
+  })
+}
+updateState(coords, self, directions){
+  var toSet = [];
+  coords.forEach(function(coord, i){
+    toSet.push([coord[1],coord[0]]);
+    }
+  )
+  var type = "";
+  var color = "";
+
+    type = "trail"
+    color="#2F4F4F";
+
+  self.setState({
+    annotations:[...self.state.annotations, {
+      coordinates:toSet,
+      type:'polyline',
+      strokeColor: color,
+      strokeWidth:4,
+      strokeAlpha:.5,
+      id:type
+    }]
   });
 }
 displayDirections(){
@@ -136,7 +195,7 @@ displayDirections(){
   toDisplay.push({
     coordinates:toSet,
     type:'polyline',
-    id:this.state.selectedTrail + 'directions',
+    id:this.state.selectedTrail,
     strokeColor:'#2ebbbe',
     strokeWidth:4,
     strokeAlpha:.5
@@ -177,9 +236,14 @@ displayDirections(){
           onLongPress={this.onLongPress}
           onTap={this.onTap}
         />
-      <ScrollView style={styles.scrollView}>
-        {this._renderButtons()}
-      </ScrollView>
+        <Modal style={{height:220, paddingBottom:50}} position={'bottom'} ref={'overlayModal'} backdrop={false} onClosed={()=>this.onClose()}>
+
+            <TouchableHighlight onPress={()=>this.props.guideHandler(this.state.selectedTrail)}>
+              <Image style={styles.overlay} resizeMode={"cover"}  source={{uri:this.state.selectedTrail+'site'}} />
+            </TouchableHighlight>
+
+        </Modal>
+
       </View>
     );
   }
@@ -246,6 +310,10 @@ displayDirections(){
 }
 
 const styles = StyleSheet.create({
+  overlay:{
+    flex:1,
+    height:220
+  },
   textborder:{
     borderWidth: 2,
     borderColor:'#2ebbbe',
@@ -259,7 +327,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    marginTop:20
+    paddingTop:10
   },
   map: {
     flex: 1

@@ -52,6 +52,44 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       description_1:'Lake Martha'
     });
   });
+  realm.write(()=>{
+  realm.create('Coordinates', {
+    key:0,
+    latitude: 40.57927797826895,
+    longitude: -111.61068646019015,
+    description:'trailhead',
+    guide:'catherine'
+  });
+  realm.create('Coordinates', {
+    key:1,
+    latitude: 40.57927797826895,
+    longitude: -111.61068646019015,
+    guide:'catherine'
+  });
+  realm.create('Coordinates', {
+    key:2,
+    latitude: 40.58191125840412,
+    longitude: -111.59469007362281,
+    guide:'catherine'
+  });
+  realm.create('Coordinates', {
+    key:3,
+    latitude: 40.59431335925271,
+   longitude: -111.59257517544131,
+    guide:'catherine'
+  });
+  realm.create('Coordinates', {
+    key:3,
+    latitude: 40.59450870748782,
+    longitude: -111.60935665738049,
+    guide:'catherine'
+  });
+
+
+
+});
+
+  let coords = realm.objects('Coordinates').filtered('guide="catherine"');
   let guides = realm.objects('ImageDescription').filtered('guide="catherine"');
   realm.write(() => {
       realm.create('Guide', {
@@ -67,8 +105,7 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
         gallSize:9,
         tags:[easy, out, dogfriendly, lake, single],
         display:0,
-        lat:40.597284,
-        long: -111.584576,
+        waypoints:coords,
         displayedElsewhere:0
 
       });
@@ -125,7 +162,23 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
         img_index:16,
         description_1:'Area where the trail crosses with a rock slide',
       });
+      realm.create('Coordinates', {
+        key:0,
+        latitude:40.6336,
+        longitude:-111.724,
+        description:'trailhead',
+        guide:'blanche'
+      });
+      realm.create('Coordinates', {
+        key:1,
+        latitude:40.606675,
+        longitude:-111.691524,
+        description:'trailhead',
+        guide:'blanche'
+      });
     });
+
+  coords = realm.objects('Coordinates').filtered('guide="blanche"');
   guides = realm.objects('ImageDescription').filtered('guide="blanche"');
   realm.write(() => {
     realm.create('Guide', {
@@ -140,11 +193,9 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:16,
       tags:[out, diff, dogfriendly, lake, single],
       display:0,
-      lat:40.6336,
-      long:-111.724,
+      waypoints:coords,
       displayedElsewhere:0,
-      trailEndLat:40.606675,
-      trailEndLong:-111.691524
+
     });
   });
 
@@ -156,73 +207,97 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       img_index:3,
       description_1:'Queens Garden',
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:5,
       description_1:'Queens Garden',
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:7,
       description_1:'Navajo Loop',
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:8,
       description_1:'Sunset Point',
     });
-  });
-  realm.write(() => {
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:11,
       description_1:'Navajo Loop',
       description_2:'Ascend/Descend'
     });
-  });
-  realm.write(() => {
+
+
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:12,
       description_1:'Navajo Loop',
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:13,
       description_1:'Navajo Loop',
     });
-  });
-  realm.write(() => {
+
+
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:15,
       description_1:'Queens Garden',
     });
-  });
-  realm.write(() => {
+
+
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:16,
       description_1:'Thor\'s Hammer',
       description_2:'Navajo Loop'
     });
-  });
-  realm.write(() => {
+
+
     realm.create('ImageDescription', {
       guide:'bryce',
       img_index:18,
       description_1:'Queens Garden',
     });
+
+    realm.create('Coordinates',{
+      key:0,
+      latitude:37.6282535,
+      longitude:-112.16295389999999,
+      description:'trailhead',
+      guide:'bryce'
+    });
+    realm.create('Coordinates',{
+        key:1,
+        latitude: 37.62593035638241,
+        longitude: -112.16171812532849,
+        description:'Queens Garden',
+        guide:'bryce'
+      });
+      realm.create('Coordinates',{
+          key:2,
+          latitude: 37.61823418796186,
+          longitude: -112.16201173716661,
+          guide:'bryce'
+        });
+        realm.create('Coordinates',{
+          key:3,
+          latitude:37.6282535,
+          longitude:-112.16295389999999,
+          description:'trailhead',
+          guide:'bryce'
+        });
+
   });
   guides = realm.objects('ImageDescription').filtered('guide="bryce"');
+  coords = realm.objects('Coordinates').filtered('guide="bryce"')
   realm.write(() => {
     realm.create('Guide', {
       name:'bryce',
@@ -237,8 +312,7 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:18,
       tags:[loop, mod, single, all],
       display:0,
-      lat:37.6282535,
-      long:-112.16295389999999,
+      waypoints:coords,
       displayedElsewhere:0
     });
   });
@@ -259,68 +333,127 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       img_index:3,
       description_1:'Governor Dern Lake',
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'grandaddy',
       img_index:5,
       description_1:'Trail leaving Pine Island Lake'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'grandaddy',
       img_index:6,
       description_1:'Pine Island Lake',
       description_2:'80 acres | Good fishing'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'grandaddy',
       img_index:7,
       description_1:'Preestablished camping spots',
       description_2:'Must be 1/2 mile from any water source'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'grandaddy',
       img_index:9,
       description_1:'Mount Agassiz',
       description_2:'Near Governor Dern Lake'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'grandaddy',
       img_index:10,
       description_1:'Lily Pad Lake',
       description_2:'Too shallow for fishing'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'grandaddy',
       img_index:12,
       description_1:'American Bistort'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'grandaddy',
       img_index:12,
       description_1:'Indian Paintbrush',
       description_2:'Castilleja'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'grandaddy',
       img_index:17,
       description_1:'Governor Dern Lake'
     });
+
+    realm.create('Coordinates', {
+      key:0,
+      latitude:40.56768453437445, longitude: -110.8251111645466,
+      description:'trailhead',
+      guide:'grandaddy'
+    });
+    realm.create('Coordinates', {
+      key:1,
+      latitude: 40.60669681604455,
+      longitude:-110.80865620743828 ,
+      description:'Left at fork',
+      guide:'grandaddy'
+    });
+    realm.create('Coordinates', {
+      key:2,
+      latitude: 40.63049970908986,
+      longitude: -110.82080708644793,
+      description:'new',
+      guide:'grandaddy'
+    });
+
+
+    realm.create('Coordinates', {
+      key:3,
+      latitude: 40.63903495208834,
+      longitude: -110.8118751525758,
+      guide:'grandaddy'
+    });
+    realm.create('Coordinates', {
+      key:4,
+      latitude: 40.65474381528327,
+      longitude: -110.80345111000122,
+      guide:'grandaddy'
+    });
+
+    realm.create('Coordinates', {
+      key:5,
+      latitude: 40.65084246793535,
+      longitude:-110.79846911398852,
+      guide:'grandaddy'
+    });
+    realm.create('Coordinates', {
+      key:6,
+      latitude: 40.648253917419765,
+      longitude:-110.79168845664611,
+      guide:'grandaddy'
+    });
+    realm.create('Coordinates', {
+      key:7,
+      latitude: 40.6239290595737,
+      longitude:-110.81029848369229,
+      guide:'grandaddy'
+    });
+    realm.create('Coordinates', {
+      key:8,
+      latitude: 40.611551831363926,
+      longitude:-110.81246182603928,
+      guide:'grandaddy'
+    });
+    realm.create('Coordinates', {
+      key:9,
+      latitude:40.56768453437445, longitude: -110.8251111645466,
+      description:'trailhead',
+      guide:'grandaddy'
+    });
   });
+  coords = realm.objects('Coordinates').filtered('guide="grandaddy"');
   guides = realm.objects('ImageDescription').filtered('guide="grandaddy"');
   realm.write(() => {
     realm.create('Guide',{
@@ -335,9 +468,9 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:18,
       tags:[loop, mod, fishing, over, lake],
       display:0,
-      lat:40.567167,
-      long: -110.8254433,
-      displayedElsewhere:0
+      waypoints:coords,
+      displayedElsewhere:0,
+
     });
   });
 
@@ -357,79 +490,116 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       description_1:'Dirt road leading to trailhead',
       description_2:'Parking available here'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:4,
       description_1:'First arch'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:5,
       description_1:'Saddle arch'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:7,
       description_1:'Indian Paintbrush',
       description_2:'Castilleja'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:8,
       description_1:'Last push up to the waterfold pocket'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:9,
       description_1:'Following the bottom of the desert canyon'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:10,
       description_1:'Following the bottom of the desert canyon'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:12,
       description_1:'Petrified sand dunes'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:13,
       description_1:'Following the slickrock ridge'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:15,
       description_1:'Tarantula and Swap Mesa'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'muley',
       img_index:16,
       description_1:'Waterfold Pocket | Strike Valley'
     });
+    realm.create('Coordinates', {
+      key:0,
+      latitude:37.8583807,
+      longitude:-111.03865080000003,
+      guide:'muley',
+      description:'trailhead'
+    });
+    realm.create('Coordinates', {
+      key:1,
+      latitude: 37.90068756068409,
+      longitude: -111.05979372021028,
+      guide:'muley',
+    });
+    realm.create('Coordinates', {
+      key:2,
+      latitude: 37.90068756068409,
+      longitude: -111.05979372021028,
+      guide:'muley',
+    });
+    realm.create('Coordinates', {
+      key:3,
+      latitude: 37.912749730264125,
+      longitude: -111.06898515550625,
+      guide:'muley',
+    });
+    realm.create('Coordinates', {
+      key:4,
+      latitude: 37.923906149253895,
+      longitude: -111.07132126578585,
+      guide:'muley',
+    });
+    realm.create('Coordinates', {
+      key:5,
+      latitude: 37.90137399391175,
+      longitude: -111.05844008483888,
+      guide:'muley',
+    });
+    realm.create('Coordinates', {
+      key:6,
+      latitude:37.8583807,
+      longitude:-111.03865080000003,
+      guide:'muley',
+      description:'trailhead'
+    });
+
+
   });
   guides = realm.objects('ImageDescription').filtered('guide="muley"');
+  coords = realm.objects('Coordinates').filtered('guide="muley"');
   realm.write(() => {
     realm.create('Guide', {
       name:'muley',
@@ -444,8 +614,7 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:18,
       tags:[loop, mod, over, all],
       display:0,
-      lat:37.8583807,
-      long:-111.03865080000003,
+      waypoints:coords,
       displayedElsewhere:0
     });
   });
@@ -458,36 +627,83 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       img_index:1,
       description_1:'Trail leading up to Inspiration Point'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'cascade',
       img_index:2,
       description_1:'Inspiration Point | Jenny Lake'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'cascade',
       img_index:6,
       description_1:'Hidden Falls'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'cascade',
       img_index:8,
       description_1:'Cathedral Group'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'cascade',
       img_index:9,
       description_1:'Jenny Lake'
     });
+    realm.create('Coordinates',{
+      key:0,
+      latitude:43.7514791,
+      longitude:-110.72232930000001,
+      guide:'cascade',
+      description:'trailhead'
+    });
+    realm.create('Coordinates',{
+      key:1,
+      latitude: 43.74866954558718,
+      longitude: -110.73311056798747,
+      guide:'cascade',
+
+    });
+    realm.create('Coordinates',{
+      key:2,
+      latitude: 43.76483853350524,
+      longitude: -110.74517027766115,
+      guide:'cascade',
+
+    });
+    realm.create('Coordinates',{
+      key:3,
+      latitude: 43.76722240057393,
+      longitude: -110.75313773575476,
+      guide:'cascade',
+
+    });
+    realm.create('Coordinates',{
+      key:4,
+      latitude: 43.76452692935544,
+      longitude: -110.81667642193725,
+      guide:'cascade',
+
+    });
+    realm.create('Coordinates',{
+      key:5,
+      latitude: 43.759961726062954,
+      longitude: -110.7443425153757,
+      guide:'cascade',
+
+    });
+    realm.create('Coordinates',{
+      key:6,
+      latitude:43.7514791,
+      longitude:-110.72232930000001,
+      guide:'cascade',
+      description:'trailhead'
+    });
   });
+
   guides = realm.objects('ImageDescription').filtered('guide="cascade"');
+  coords = realm.objects('Coordinates').filtered('guide="cascade"');
   realm.write(() => {
     realm.create('Guide', {
       name:'cascade',
@@ -501,8 +717,7 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:12,
       tags:[out, diff,single,lake],
       display:0,
-      lat:43.7514791,
-      long:-110.72232930000001,
+      waypoints:coords,
       displayedElsewhere:0
       });
   });
@@ -515,7 +730,40 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       img_index:4,
       description_1:'Trail leading out of the parking lot into the springs'
     });
+    realm.create('Coordinates', {
+      guide:'cascadesprings',
+      latitude: 40.4583861833068,
+      longitude: -111.54892897426623,
+      key:0,
+      description:'trailhead'
+    });
+    realm.create('Coordinates', {
+      guide:'cascadesprings',
+      latitude: 40.45876158351345,
+      longitude: -111.55177636776921,
+      key:1,
+    });
+    realm.create('Coordinates', {
+      guide:'cascadesprings',
+      latitude: 40.458181991872124,
+      longitude: -111.55197462940731,
+      key:2,
+    });
+    realm.create('Coordinates', {
+      guide:'cascadesprings',
+      latitude: 40.458181991872124,
+      longitude: -111.55197462940731,
+      key:3,
+    });
+    realm.create('Coordinates', {
+      guide:'cascadesprings',
+      latitude: 40.4583861833068,
+      longitude: -111.54892897426623,
+      key:0,
+      description:'trailhead'
+    });
   });
+  coords = realm.objects('Coordinates').filtered('guide="cascadesprings"')
   guides = realm.objects('ImageDescription').filtered('guide="cascadesprings"');
   realm.write(() => {
     realm.create('Guide', {
@@ -530,8 +778,7 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:12,
       tags:[loop, easy,dogfriendly,single],
       display:0,
-      lat:40.4599175,
-      long:-111.55111629999999,
+      waypoints:coords,
       displayedElsewhere:0
     });
   });
@@ -551,37 +798,53 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       img_index:2,
       description_1:'Ranch Loop'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'harriman',
       img_index:3,
       description_1:'River Trail'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'harriman',
       img_index:5,
       description_1:'Trumpeter Swans',
       description_2:'Silver Lake Loop'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'harriman',
       img_index:6,
       description_1:'Ranch Loop'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'harriman',
       img_index:7,
       description_1:'Ranch Loop'
     });
+    realm.create('Coordinates',{
+      guide:'harriman',
+      latitude: 44.32303866358157,
+      longitude: -111.46047930489044,
+      key:0,
+      description:'trailhead'
+    });
+    realm.create('Coordinates',{
+      guide:'harriman',
+      latitude: 44.33461008859257,
+      longitude: -111.46404189616476,
+      key:1,
+    });
+    realm.create('Coordinates',{
+      guide:'harriman',
+      latitude: 44.34011393937271,
+      longitude: -111.47595427335636,
+      key:2,
+    });
   });
   guides = realm.objects('ImageDescription').filtered('guide = "harriman"');
+  coords = realm.objects('Coordinates').filtered('guide="harriman"')
   realm.write(() => {
     realm.create('Guide',{
       name:'harriman',
@@ -595,8 +858,7 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:8,
       tags:[loop, inter, dogfriendly, all,single,lake],
       display:0,
-      lat:44.32568999999999,
-      long:-111.46522500000003,
+      waypoints:coords,
       displayedElsewhere:0
     });
   });
@@ -609,8 +871,41 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       img_index:1,
       description_1:'Aspen trees'
     });
+    realm.create('Coordinates',{
+      key:0,
+      latitude:40.6498,
+      longitude:-111.648,
+      guide:'doglake',
+      description:'trailhead'
+    });
+    realm.create('Coordinates',{
+      key:1,
+      latitude: 40.666691102704334,
+      longitude: -111.63855893733387,
+      guide:'doglake',
+    });
+    realm.create('Coordinates',{
+      key:2,
+      latitude: 40.66678107031274,
+      longitude: -111.65546708372369,
+      guide:'doglake',
+    });
+    realm.create('Coordinates',{
+      key:3,
+      latitude: 40.64929624166217,
+      longitude: -111.6618181773153,
+      guide:'doglake',
+    });
+    realm.create('Coordinates',{
+      key:4,
+      latitude:40.6498,
+      longitude:-111.648,
+      guide:'doglake',
+      description:'trailhead'
+    });
   });
   guides = realm.objects('ImageDescription').filtered('guide="doglake"');
+  coords = realm.objects('Coordinates').filtered('guide="doglake"');
   realm.write(() => {
     realm.create('Guide', {
       name:'doglake',
@@ -622,11 +917,10 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       description:'Dog Lake can be accessed from two different points in Mill Creek Canyon and Big Cottonwood Canyon. If bringing a dog along with you will want to make sure you take the Mill Creek Canyon side as dogs are forbidden in Big Cottonwood.\n\nI did this hike in late Fall at the end of October. The weather was great with a light jacket. The sun shining and tricking everyone that winter was far off.\n\nIt is a nice narrow trail that is popular with mountain bikers. The trail becomes dense with groves of quaking aspen. Be sure to keep your eyes open for them coming and going on the trail.\n\nTip: Avoid mountain bikers by going odd numbered days. The trail alternates allowing bikers on even days.\n\nThe trail stays moderately level until the last push that gets you up to the lake. The lake is quite small but very quaint. You can easily hike around the lake and explore around.\n\nThe area is surrounded in beautiful aspen quakies and while beautiful year round, I would say the perfect time is in the fall - just before the leaves fall.',
       img_descriptions:guides,
       gallSize:8,
-      tags:[out, mod, dogfriendly, single],
+      tags:[loop, mod, dogfriendly, single],
       display:0,
-      lat:40.6498,
-      long:-111.648,
-      displayedElsewhere:0
+      displayedElsewhere:0,
+      waypoints:coords
     });
   });
 
@@ -638,14 +932,21 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       img_index:15,
       description_1:'Sundance Mountain Resort'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'stewart',
       img_index:16,
       description_1:'Sundance Mountain Resort'
     });
+    realm.create('Coordinates',{
+      latitude:40.4043,
+      longitude:-111.605,
+      guide:'stewart',
+      description:'trailhead',
+      key:0
+    })
   });
+  coords = realm.objects('Coordinates').filtered('guide="stewart"');
   guides = realm.objects('ImageDescription').filtered('guide="stewart"');
   realm.write(() => {
     realm.create('Guide',{
@@ -661,8 +962,7 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:17,
       tags:[out, mod, dogfriendly, all, single],
       display:0,
-      lat:40.4043,
-      long:-111.605,
+      waypoints:coords,
       displayedElsewhere:0
     });
   });
@@ -676,22 +976,49 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       description_1:'Indian Paintbrush',
       description_2:'Castilleja'
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'whitepine',
       img_index:3,
       description_1:'Sticky Geranium',
     });
-  });
-  realm.write(() => {
+
     realm.create('ImageDescription', {
       guide:'whitepine',
       img_index:6,
       description_1:'Larkspur',
     });
+    realm.create('Coordinates',{
+      key:0,
+      latitude: 41.895300745444246,
+      longitude: -111.64234224962809,
+      guide:'whitepine',
+      description:'trailhead'
+    });
+    realm.create('Coordinates',{
+      key:1,
+      latitude: 41.89572300348104,
+      longitude: -111.64156099770366,
+      guide:'whitepine',
+      description:'trailhead'
+    });
+    realm.create('Coordinates',{
+      key:2,
+      latitude: 41.92342250009321,
+      longitude: -111.65614743165304,
+      guide:'whitepine',
+      description:'trailhead'
+    });
+    realm.create('Coordinates',{
+      key:3,
+      latitude: 41.895300745444246,
+      longitude: -111.64234224962809,
+      guide:'whitepine',
+      description:'trailhead'
+    });
   });
   guides = realm.objects('ImageDescription').filtered('guide="whitepine"');
+  coords = realm.objects('Coordinates').filtered('guide="whitepine"');
   realm.write(() => {
     realm.create('Guide',{
       name:'whitepine',
@@ -705,30 +1032,11 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
       gallSize:6,
       tags:[out, mod, dogfriendly, single, lake],
       display:0,
-      lat:41.89078,
-      long:-111.637752,
+      waypoints:coords,
       displayedElsewhere:0
     });
   });
 
-  realm.write(() => {
-    realm.create('Guide',{
-      name:'sundial',
-      name_description:'Sundial and Dromedary Peak',
-      location_loc:bear,
-      closest_to:'SLC',
-      distance:6.6,
-      elevation:1250,
-      description:'August is a great time to do this hike. The trail is abundant with wildflowers. It is a fairly flat and relaxing hike with a beautiful view of the lake at the end. Do some exploring around the lake when you reach it.',
-      img_descriptions:guides,
-      gallSize:18,
-      tags:[out, diff, single, mountain],
-      display:0,
-      lat:40.6336,
-      long:-111.724,
-      displayedElsewhere:0
-    });
-  });
 
 
   realm.write(() => {
@@ -840,16 +1148,6 @@ let mountain = realm.objects('Tag').filtered('name="Mountain"')[0];
   realm.write(() => {
     realm.objects('Guide').filtered('name = "whitepine"')[0].similar_hikes.push(
     realm.objects('Guide').filtered('name = "catherine"')[0]
-    );
-  });
-  realm.write(() => {
-    realm.objects('Guide').filtered('name = "sundial"')[0].similar_hikes.push(
-    realm.objects('Guide').filtered('name = "blanche"')[0]
-    );
-  });
-  realm.write(() => {
-    realm.objects('Guide').filtered('name = "sundial"')[0].similar_hikes.push(
-    realm.objects('Guide').filtered('name = "grandaddy"')[0]
     );
   });
 

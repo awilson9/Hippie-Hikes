@@ -190,7 +190,7 @@ var search = React.createClass({
       guideElements.push(
         <TouchableHighlight
         underlayColor={'#2ebbbe'}
-        key={i++} onPress={()=>this._navigate(guide.name)}>
+        key={i++} onPress={()=>this.props.guideHandler(guide.name)}>
           <View>
             <Image source = {{uri:item+'site'}} resizeMode="contain" style={styles.contain}/>
           </View>

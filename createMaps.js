@@ -77,7 +77,7 @@ class CreateMaps extends Component {
     Location.setDistanceFilter(10.0);
   }
   createAnnotationFromTracking(){
-    let trail = realm.objects('Location').filtered('trail="trail"')[0];
+    let trail = realm.objects('Location').filtered('trail="Gobbler"')[0];
     var coords = [];
     trail.coordinates.forEach(function(coordinate){
       coords.push([coordinate.latitude,coordinate.longitude]);
@@ -124,7 +124,7 @@ class CreateMaps extends Component {
             key:this.state.index,
             latitude:location.coords.latitude,
             longitude:location.coords.longitude,
-            altitude:location.coords.altidude
+            altitude:location.coords.altitude
           });
           this.state.location.coordinates.push(coord);
           this.setState({
